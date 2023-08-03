@@ -11,52 +11,52 @@ import delta.common.ui.swing.tables.Sort;
 import delta.common.ui.swing.tables.TableColumnController;
 import delta.common.ui.swing.tables.TableColumnsManager;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
-import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionDetailsForCategory;
-import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionUIItem;
+import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
+import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
 
 /**
  * Controller for a table that shows the display selection elements for a single category.
  * @author DAM
  */
-public class DisplaySelectionCategoryTableController
+public class DisplaySelectionTableController
 {
   // Data
-  private DisplaySelectionDetailsForCategory _data;
+  private DisplaySelection _data;
   // GUI
   private JTable _table;
-  private GenericTableController<DisplaySelectionUIItem> _tableController;
+  private GenericTableController<DisplaySelectionItem> _tableController;
 
   /**
    * Constructor.
    * @param data Data to show.
    * @param listener Listener.
    */
-  public DisplaySelectionCategoryTableController(DisplaySelectionDetailsForCategory data, FilterUpdateListener listener)
+  public DisplaySelectionTableController(DisplaySelection data, FilterUpdateListener listener)
   {
     _data=data;
     _tableController=buildTable(listener);
     _tableController.setFilter(null);
   }
 
-  private GenericTableController<DisplaySelectionUIItem> buildTable(FilterUpdateListener listener)
+  private GenericTableController<DisplaySelectionItem> buildTable(FilterUpdateListener listener)
   {
-    List<DisplaySelectionUIItem> items=_data.getItems();
-    ListDataProvider<DisplaySelectionUIItem> provider=new ListDataProvider<DisplaySelectionUIItem>(items);
-    GenericTableController<DisplaySelectionUIItem> table=new GenericTableController<DisplaySelectionUIItem>(provider);
+    List<DisplaySelectionItem> items=_data.getItems();
+    ListDataProvider<DisplaySelectionItem> provider=new ListDataProvider<DisplaySelectionItem>(items);
+    GenericTableController<DisplaySelectionItem> table=new GenericTableController<DisplaySelectionItem>(provider);
     // Columns
-    List<TableColumnController<DisplaySelectionUIItem,?>> columns=DisplaySelectionDetailsColumnsBuilder.buildColumns(listener);
-    for(TableColumnController<DisplaySelectionUIItem,?> column : columns)
+    List<TableColumnController<DisplaySelectionItem,?>> columns=DisplaySelectionColumnsBuilder.buildColumns(listener);
+    for(TableColumnController<DisplaySelectionItem,?> column : columns)
     {
       table.addColumnController(column);
     }
 
     // Setup
     List<String> columnsIds=getColumnIds();
-    TableColumnsManager<DisplaySelectionUIItem> columnsManager=table.getColumnsManager();
+    TableColumnsManager<DisplaySelectionItem> columnsManager=table.getColumnsManager();
     columnsManager.setColumns(columnsIds);
 
     // Sort
-    Sort sort=Sort.buildFromString(Sort.SORT_ASCENDING+DisplaySelectionDetailsColumnIds.NAME);
+    Sort sort=Sort.buildFromString(Sort.SORT_ASCENDING+DisplaySelectionColumnIds.NAME);
     table.setSort(sort);
     return table;
   }
@@ -64,9 +64,9 @@ public class DisplaySelectionCategoryTableController
   private List<String> getColumnIds()
   {
     List<String> columnIds=new ArrayList<String>();
-    columnIds.add(DisplaySelectionDetailsColumnIds.VISIBLE.name());
-    columnIds.add(DisplaySelectionDetailsColumnIds.NAME.name());
-    columnIds.add(DisplaySelectionDetailsColumnIds.COUNT.name());
+    columnIds.add(DisplaySelectionColumnIds.VISIBLE.name());
+    columnIds.add(DisplaySelectionColumnIds.NAME.name());
+    columnIds.add(DisplaySelectionColumnIds.COUNT.name());
     return columnIds;
   }
 
@@ -74,7 +74,7 @@ public class DisplaySelectionCategoryTableController
    * Get the managed table controller.
    * @return the managed table controller.
    */
-  public GenericTableController<DisplaySelectionUIItem> getTableController()
+  public GenericTableController<DisplaySelectionItem> getTableController()
   {
     return _tableController;
   }

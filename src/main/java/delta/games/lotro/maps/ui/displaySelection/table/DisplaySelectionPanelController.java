@@ -17,10 +17,10 @@ import delta.common.ui.swing.windows.WindowsManager;
  * Controller the display selection display panel for a category.
  * @author DAM
  */
-public class DisplaySelectionCategoryPanelController
+public class DisplaySelectionPanelController
 {
   // Data
-  private DisplaySelectionCategoryTableController _tableController;
+  private DisplaySelectionTableController _tableController;
   // GUI
   private JPanel _panel;
   private JLabel _statsLabel;
@@ -33,7 +33,7 @@ public class DisplaySelectionCategoryPanelController
    * @param parent Parent window.
    * @param tableController Associated table controller.
    */
-  public DisplaySelectionCategoryPanelController(WindowController parent, DisplaySelectionCategoryTableController tableController)
+  public DisplaySelectionPanelController(WindowController parent, DisplaySelectionTableController tableController)
   {
     _parent=parent;
     _tableController=tableController;
@@ -57,7 +57,7 @@ public class DisplaySelectionCategoryPanelController
   private JPanel build()
   {
     JPanel panel=GuiFactory.buildBackgroundPanel(new BorderLayout());
-    TitledBorder frameBorder=GuiFactory.buildTitledBorder("Category");
+    TitledBorder frameBorder=GuiFactory.buildTitledBorder("Selection");
     panel.setBorder(frameBorder);
 
     // Table

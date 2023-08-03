@@ -1,7 +1,11 @@
 package delta.games.lotro.maps.data.displaySelection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import delta.games.lotro.maps.data.Marker;
 
 /**
  * Display selection.
@@ -9,58 +13,70 @@ import java.util.Map;
  */
 public class DisplaySelection
 {
-  private Map<Integer,DisplaySelectionForCategory> _displaySelections;
+  private Map<Integer,DisplaySelectionItem> _items;
 
   /**
    * Constructor.
    */
   public DisplaySelection()
   {
-    _displaySelections=new HashMap<Integer,DisplaySelectionForCategory>();
+    _items=new HashMap<Integer,DisplaySelectionItem>();
   }
 
   /**
-   * Add an element.
-   * @param code Category code.
-   * @param did Data identifier to use.
-   * @param visible Initial visibility.
+   * Get the number of items.
+   * @return An items count.
    */
-  public void addElement(int code, int did, boolean visible)
+  public int getItemsCount()
   {
-    DisplaySelectionForCategory displaySelection=getDisplaySelectionForCategory(code);
-    displaySelection.addDID(did,visible);
+    return _items.size();
   }
 
   /**
-   * Get the display selection for the given category (create it if needed).
-   * @param code Category code.
-   * @return A display selection for the given category.
+   * Get the managed items.
+   * @return
    */
-  public DisplaySelectionForCategory getDisplaySelectionForCategory(int code)
+  public List<DisplaySelectionItem> getItems()
   {
-    Integer codeKey=Integer.valueOf(code);
-    DisplaySelectionForCategory displaySelection=_displaySelections.get(codeKey);
-    if (displaySelection==null)
+    List<DisplaySelectionItem> ret=new ArrayList<DisplaySelectionItem>();
+    ret.addAll(_items.values());
+    // TODO Sort
+    return ret;
+  }
+
+  /**
+   * Add a marker.
+   * @param marker Marker to add.
+   */
+  public void addMarker(Marker marker)
+  {
+    int did=marker.getDid();
+    Integer key=Integer.valueOf(did);
+    DisplaySelectionItem item=_items.get(key);
+    if (item==null)
     {
-      displaySelection=new DisplaySelectionForCategory(code);
-      _displaySelections.put(codeKey,displaySelection);
+      item=new DisplaySelectionItem(marker);
+      _items.put(key,item);
     }
-    return displaySelection;
+    else
+    {
+      item.addMarker(marker);
+    }
   }
 
   /**
    * Indicates if a given element is visible or not.
-   * @param code Category code.
    * @param did Data identifier.
    * @return <code>true</code> if visible, <code>false</code> otherwise.
    */
-  public boolean isVisible(int code, int did)
+  public boolean isVisible(int did)
   {
-    DisplaySelectionForCategory displaySelection=_displaySelections.get(Integer.valueOf(code));
-    if (displaySelection==null)
+    Integer key=Integer.valueOf(did);
+    DisplaySelectionItem item=_items.get(key);
+    if (item!=null)
     {
-      return false;
+      return item.isVisible();
     }
-    return displaySelection.isVisible(did);
+    return false;
   }
 }

@@ -5,16 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 
-import delta.common.ui.swing.GuiFactory;
 import delta.games.lotro.maps.data.MapsManager;
 import delta.games.lotro.maps.data.Marker;
-import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
+import delta.games.lotro.maps.data.displaySelection.DisplaySelectionBuilder;
 import delta.games.lotro.maps.data.markers.MarkersFinder;
-import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionCategoryPanelController;
-import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionCategoryTableController;
+import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionPanelController;
+import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionTableController;
 
 /**
  * Test for the display selection UI.
@@ -36,12 +34,12 @@ public class MainTestDisplaySelectionUI
         1879063922, // Low Lands
         1879063923, // Haudh Lin
         1879063924, // Falathlorn
-        1879063925, // Sarnúr
+        1879063925, // Sarnï¿½r
         1879063926, // Rath Teraig
         1879063928, // Falathlorn
         1879063929, // Celondim
         1879063930, // Limael's Vineyard
-        1879063931, // Kheledûl
+        1879063931, // Kheledï¿½l
         1879206150, // Low Lands
     };
     List<Marker> markers=new ArrayList<Marker>();
@@ -50,20 +48,11 @@ public class MainTestDisplaySelectionUI
       markers.addAll(finder.findMarkers(id,0));
     }
 
-    DisplaySelection selection=new DisplaySelection();
-    DisplaySelectionDetails details=DisplaySelectionDetailsBuilder.build(selection,markers);
-    JTabbedPane tab=GuiFactory.buildTabbedPane();
-    CategoriesManager categoriesMgr=mapsManager.getCategories();
-    for(Integer category : details.getCategories())
-    {
-      DisplaySelectionDetailsForCategory displaySelectionForCategory=details.getDisplaySelection(category.intValue());
-      DisplaySelectionCategoryTableController tb=new DisplaySelectionCategoryTableController(displaySelectionForCategory,null);
-      DisplaySelectionCategoryPanelController panel=new DisplaySelectionCategoryPanelController(null,tb);
-      String categoryName=categoriesMgr.getByCode(category.intValue()).getName();
-      tab.add(categoryName,panel.getPanel());
-    }
+    DisplaySelection selection=DisplaySelectionBuilder.build(markers);
+    DisplaySelectionTableController tb=new DisplaySelectionTableController(selection,null);
+    DisplaySelectionPanelController panel=new DisplaySelectionPanelController(null,tb);
     JFrame f=new JFrame();
-    f.add(tab);
+    f.add(panel.getPanel());
     f.pack();
     f.setVisible(true);
     f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

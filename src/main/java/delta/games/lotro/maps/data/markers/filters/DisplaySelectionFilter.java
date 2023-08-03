@@ -24,8 +24,7 @@ public class DisplaySelectionFilter implements Filter<Marker>
   @Override
   public boolean accept(Marker item)
   {
-    int categoryCode=item.getCategoryCode();
     int did=item.getDid();
-    return _displaySelection.isVisible(categoryCode,did);
+    return _displaySelection.isVisible(did);
   }
 }
