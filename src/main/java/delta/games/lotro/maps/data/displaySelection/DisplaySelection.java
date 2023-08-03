@@ -2,8 +2,10 @@ package delta.games.lotro.maps.data.displaySelection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import delta.games.lotro.maps.data.Marker;
 
@@ -78,5 +80,24 @@ public class DisplaySelection
       return item.isVisible();
     }
     return false;
+  }
+
+  private Set<Integer> getVisibleItems()
+  {
+    HashSet<Integer> ret=new HashSet<Integer>();
+    for(DisplaySelectionItem item : _items.values())
+    {
+      if (item.isVisible())
+      {
+        ret.add(Integer.valueOf(item.getIdentifier()));
+      }
+    }
+    return ret;
+  }
+
+  @Override
+  public String toString()
+  {
+    return "Visible: "+getVisibleItems().size();
   }
 }

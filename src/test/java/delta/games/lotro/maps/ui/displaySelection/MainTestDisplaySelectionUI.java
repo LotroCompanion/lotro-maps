@@ -4,16 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
-
+import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.games.lotro.maps.data.MapsManager;
 import delta.games.lotro.maps.data.Marker;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionBuilder;
 import delta.games.lotro.maps.data.markers.MarkersFinder;
-import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionPanelController;
-import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionTableController;
+import delta.games.lotro.maps.data.markers.filters.DisplaySelectionFilter;
 
 /**
  * Test for the display selection UI.
@@ -51,13 +49,17 @@ public class MainTestDisplaySelectionUI
 
     DisplaySelection selection=DisplaySelectionBuilder.build(markers);
     CategoriesManager categoriesMgr=mapsManager.getCategories();
-    DisplaySelectionTableController tb=new DisplaySelectionTableController(selection,categoriesMgr,null);
-    DisplaySelectionPanelController panel=new DisplaySelectionPanelController(null,tb);
-    JFrame f=new JFrame();
-    f.add(panel.getPanel());
-    f.pack();
-    f.setVisible(true);
-    f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    DisplaySelectionFilter filter=new DisplaySelectionFilter(selection);
+    FilterUpdateListener listener=new FilterUpdateListener()
+    {
+      @Override
+      public void filterUpdated()
+      {
+        System.out.println(selection.toString());
+      }
+    };
+    DisplaySelectionWindowController ctrl=new DisplaySelectionWindowController(null,categoriesMgr,filter,listener,selection);
+    ctrl.show();
   }
 
   /**

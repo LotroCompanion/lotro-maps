@@ -14,6 +14,8 @@ import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
+import delta.games.lotro.maps.data.markers.filters.DisplaySelectionFilter;
+import delta.games.lotro.maps.ui.displaySelection.filter.DisplaySelectionItemsFilter;
 
 /**
  * Controller for a table that shows the display selection elements for a single category.
@@ -31,13 +33,17 @@ public class DisplaySelectionTableController
    * Constructor.
    * @param data Data to show.
    * @param categoriesMgr Categories manager.
-   * @param listener Listener.
+   * @param itemsFilter Items filter.
+   * @param filter Contents filter.
+   * @param visibilityListener Visibility update listener.
    */
-  public DisplaySelectionTableController(DisplaySelection data, CategoriesManager categoriesMgr, FilterUpdateListener listener)
+  public DisplaySelectionTableController(DisplaySelection data, CategoriesManager categoriesMgr,
+      DisplaySelectionItemsFilter itemsFilter,
+      DisplaySelectionFilter filter, FilterUpdateListener visibilityListener)
   {
     _data=data;
-    _tableController=buildTable(categoriesMgr,listener);
-    _tableController.setFilter(null);
+    _tableController=buildTable(categoriesMgr,visibilityListener);
+    _tableController.setFilter(itemsFilter);
   }
 
   private GenericTableController<DisplaySelectionItem> buildTable(CategoriesManager categoriesMgr, FilterUpdateListener listener)

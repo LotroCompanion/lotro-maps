@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.common.ui.swing.windows.WindowController;
 import delta.common.ui.swing.windows.WindowsManager;
 
@@ -17,7 +18,7 @@ import delta.common.ui.swing.windows.WindowsManager;
  * Controller the display selection display panel for a category.
  * @author DAM
  */
-public class DisplaySelectionPanelController
+public class DisplaySelectionPanelController implements FilterUpdateListener
 {
   // Data
   private DisplaySelectionTableController _tableController;
@@ -70,6 +71,13 @@ public class DisplaySelectionPanelController
     statsPanel.add(_statsLabel);
     panel.add(statsPanel,BorderLayout.NORTH);
     return panel;
+  }
+
+  @Override
+  public void filterUpdated()
+  {
+    _tableController.updateFilter();
+    updateStatsLabel();
   }
 
   private void updateStatsLabel()
