@@ -25,6 +25,15 @@ public class GeoBox
   }
 
   /**
+   * Get this box as a string.
+   * @return a string.
+   */
+  public String asString()
+  {
+    return _min.asString()+"->"+_max.asString();
+  }
+
+  /**
    * Get the minimum point of this box (most south-western point).
    * @return a point.
    */

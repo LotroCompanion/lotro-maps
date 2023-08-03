@@ -7,6 +7,10 @@ package delta.games.lotro.maps.ui.displaySelection.table;
 public enum DisplaySelectionColumnIds
 {
   /**
+   * Identifier.
+   */
+  ID,
+  /**
    * Visible.
    */
   VISIBLE,
@@ -17,5 +21,13 @@ public enum DisplaySelectionColumnIds
   /**
    * Count.
    */
-  COUNT
+  COUNT,
+  /**
+   * Category.
+   */
+  CATEGORY,
+  /**
+   * Position(s).
+   */
+  POSITIONS
 }

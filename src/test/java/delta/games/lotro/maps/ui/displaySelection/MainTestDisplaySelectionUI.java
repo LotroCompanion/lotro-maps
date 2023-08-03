@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import delta.games.lotro.maps.data.MapsManager;
 import delta.games.lotro.maps.data.Marker;
+import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionBuilder;
 import delta.games.lotro.maps.data.markers.MarkersFinder;
@@ -49,7 +50,8 @@ public class MainTestDisplaySelectionUI
     }
 
     DisplaySelection selection=DisplaySelectionBuilder.build(markers);
-    DisplaySelectionTableController tb=new DisplaySelectionTableController(selection,null);
+    CategoriesManager categoriesMgr=mapsManager.getCategories();
+    DisplaySelectionTableController tb=new DisplaySelectionTableController(selection,categoriesMgr,null);
     DisplaySelectionPanelController panel=new DisplaySelectionPanelController(null,tb);
     JFrame f=new JFrame();
     f.add(panel.getPanel());

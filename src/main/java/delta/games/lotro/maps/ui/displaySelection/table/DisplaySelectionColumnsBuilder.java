@@ -8,6 +8,9 @@ import delta.common.ui.swing.tables.CellDataUpdater;
 import delta.common.ui.swing.tables.DefaultTableColumnController;
 import delta.common.ui.swing.tables.TableColumnController;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
+import delta.games.lotro.maps.data.GeoPoints;
+import delta.games.lotro.maps.data.categories.CategoriesManager;
+import delta.games.lotro.maps.data.categories.Category;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
 
 /**
@@ -17,20 +20,55 @@ import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
 public class DisplaySelectionColumnsBuilder
 {
   /**
+   * Indicates if 'technical' columns shall be available or not.
+   * @return <code>true</code> to show them, <code>false</code> otherwise.
+   */
+  private static boolean showTechnicalColumns()
+  {
+    String env=System.getenv("LC_SHOW_TECHNICAL_COLUMNS");
+    return "true".equals(env);
+  }
+
+  /**
    * Build the columns to show the attributes of a display selection item.
+   * @param categoriesMgr Categories manager.
    * @param listener Filter update listener.
    * @return a list of columns.
    */
-  public static List<TableColumnController<DisplaySelectionItem,?>> buildColumns(FilterUpdateListener listener)
+  public static List<TableColumnController<DisplaySelectionItem,?>> buildColumns(CategoriesManager categoriesMgr, FilterUpdateListener listener)
   {
     List<TableColumnController<DisplaySelectionItem,?>> ret=new ArrayList<TableColumnController<DisplaySelectionItem,?>>();
+    // Identifier
+    if (showTechnicalColumns())
+    {
+      ret.add(buildIdentifierColumn());
+    }
     // Visibility
     ret.add(buildVisbilityColumn(listener));
     // Name
     ret.add(buildNameColumn());
     // Count
     ret.add(buildCountColumn());
+    // Categories
+    ret.add(buildCategoryColumn(categoriesMgr));
+    // Positions
+    ret.add(buildPositionsColumn());
     return ret;
+  }
+
+  private static TableColumnController<DisplaySelectionItem,Integer> buildIdentifierColumn()
+  {
+    CellDataProvider<DisplaySelectionItem,Integer> idCell=new CellDataProvider<DisplaySelectionItem,Integer>()
+    {
+      @Override
+      public Integer getData(DisplaySelectionItem item)
+      {
+        return Integer.valueOf(item.getIdentifier());
+      }
+    };
+    DefaultTableColumnController<DisplaySelectionItem,Integer> idColumn=new DefaultTableColumnController<DisplaySelectionItem,Integer>(DisplaySelectionColumnIds.ID.name(),"ID",Integer.class,idCell); // I18n
+    idColumn.setWidthSpecs(100,100,100);
+    return idColumn;
   }
 
   /**
@@ -100,5 +138,40 @@ public class DisplaySelectionColumnsBuilder
     DefaultTableColumnController<DisplaySelectionItem,Integer> countColumn=new DefaultTableColumnController<DisplaySelectionItem,Integer>(DisplaySelectionColumnIds.COUNT.name(),"Count",Integer.class,countCell);
     countColumn.setWidthSpecs(50,50,50);
     return countColumn;
+  }
+
+  private static TableColumnController<DisplaySelectionItem,String> buildCategoryColumn(final CategoriesManager categoriesMgr)
+  {
+    CellDataProvider<DisplaySelectionItem,String> cell=new CellDataProvider<DisplaySelectionItem,String>()
+    {
+      @Override
+      public String getData(DisplaySelectionItem item)
+      {
+        int code=item.getCategoryCode();
+        Category category=categoriesMgr.getByCode(code);
+        return (category!=null)?category.getName():null;
+      }
+    };
+    DefaultTableColumnController<DisplaySelectionItem,String> column=new DefaultTableColumnController<DisplaySelectionItem,String>(DisplaySelectionColumnIds.CATEGORY.name(),"Category",String.class,cell);
+    column.setWidthSpecs(70,150,150);
+    column.setEditable(false);
+    return column;
+  }
+
+  private static TableColumnController<DisplaySelectionItem,GeoPoints> buildPositionsColumn()
+  {
+    CellDataProvider<DisplaySelectionItem,GeoPoints> cell=new CellDataProvider<DisplaySelectionItem,GeoPoints>()
+    {
+      @Override
+      public GeoPoints getData(DisplaySelectionItem item)
+      {
+        return item.getPositions();
+      }
+    };
+    
+    DefaultTableColumnController<DisplaySelectionItem,GeoPoints> column=new DefaultTableColumnController<DisplaySelectionItem,GeoPoints>(DisplaySelectionColumnIds.POSITIONS.name(),"Location(s)",GeoPoints.class,cell);
+    column.setWidthSpecs(70,250,250);
+    column.setEditable(false);
+    return column;
   }
 }

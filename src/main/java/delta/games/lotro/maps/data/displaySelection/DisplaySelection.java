@@ -34,7 +34,7 @@ public class DisplaySelection
 
   /**
    * Get the managed items.
-   * @return
+   * @return the managed items.
    */
   public List<DisplaySelectionItem> getItems()
   {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import delta.common.utils.id.Identifiable;
+import delta.games.lotro.maps.data.GeoPoints;
 import delta.games.lotro.maps.data.Marker;
 
 /**
@@ -14,6 +15,7 @@ public class DisplaySelectionItem implements Identifiable
 {
   private Marker _reference;
   private List<Marker> _markers;
+  private GeoPoints _positions;
   private boolean _visible;
 
   /**
@@ -24,7 +26,8 @@ public class DisplaySelectionItem implements Identifiable
   {
     _reference=marker;
     _markers=new ArrayList<Marker>();
-    _markers.add(marker);
+    _positions=null;
+    addMarker(marker);
     _visible=true;
   }
 
@@ -77,6 +80,30 @@ public class DisplaySelectionItem implements Identifiable
   public int getMarkersCount()
   {
     return _markers.size();
+  }
+
+  /**
+   * Get the positions. 
+   * @return the positions.
+   */
+  public GeoPoints getPositions()
+  {
+    if (_positions==null)
+    {
+      buildPositions();
+    }
+    return _positions;
+  }
+
+  private void buildPositions()
+  {
+    GeoPoints positions=new GeoPoints();
+    for(Marker marker : _markers)
+    {
+      positions.addPosition(marker.getPosition());
+    }
+    positions.finish();
+    _positions=positions;
   }
 
   /**

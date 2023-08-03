@@ -11,6 +11,7 @@ import delta.common.ui.swing.tables.Sort;
 import delta.common.ui.swing.tables.TableColumnController;
 import delta.common.ui.swing.tables.TableColumnsManager;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
+import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
 
@@ -29,22 +30,23 @@ public class DisplaySelectionTableController
   /**
    * Constructor.
    * @param data Data to show.
+   * @param categoriesMgr Categories manager.
    * @param listener Listener.
    */
-  public DisplaySelectionTableController(DisplaySelection data, FilterUpdateListener listener)
+  public DisplaySelectionTableController(DisplaySelection data, CategoriesManager categoriesMgr, FilterUpdateListener listener)
   {
     _data=data;
-    _tableController=buildTable(listener);
+    _tableController=buildTable(categoriesMgr,listener);
     _tableController.setFilter(null);
   }
 
-  private GenericTableController<DisplaySelectionItem> buildTable(FilterUpdateListener listener)
+  private GenericTableController<DisplaySelectionItem> buildTable(CategoriesManager categoriesMgr, FilterUpdateListener listener)
   {
     List<DisplaySelectionItem> items=_data.getItems();
     ListDataProvider<DisplaySelectionItem> provider=new ListDataProvider<DisplaySelectionItem>(items);
     GenericTableController<DisplaySelectionItem> table=new GenericTableController<DisplaySelectionItem>(provider);
     // Columns
-    List<TableColumnController<DisplaySelectionItem,?>> columns=DisplaySelectionColumnsBuilder.buildColumns(listener);
+    List<TableColumnController<DisplaySelectionItem,?>> columns=DisplaySelectionColumnsBuilder.buildColumns(categoriesMgr,listener);
     for(TableColumnController<DisplaySelectionItem,?> column : columns)
     {
       table.addColumnController(column);
@@ -64,9 +66,12 @@ public class DisplaySelectionTableController
   private List<String> getColumnIds()
   {
     List<String> columnIds=new ArrayList<String>();
+    columnIds.add(DisplaySelectionColumnIds.ID.name());
     columnIds.add(DisplaySelectionColumnIds.VISIBLE.name());
     columnIds.add(DisplaySelectionColumnIds.NAME.name());
     columnIds.add(DisplaySelectionColumnIds.COUNT.name());
+    columnIds.add(DisplaySelectionColumnIds.CATEGORY.name());
+    columnIds.add(DisplaySelectionColumnIds.POSITIONS.name());
     return columnIds;
   }
 
