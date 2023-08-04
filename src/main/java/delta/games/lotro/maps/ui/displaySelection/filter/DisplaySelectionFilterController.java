@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.combobox.ComboBoxController;
@@ -124,8 +123,6 @@ public class DisplaySelectionFilterController implements ActionListener
 
     // Display selection filter
     JPanel filterPanel=buildFilterPanel();
-    Border border=GuiFactory.buildTitledBorder("Filter"); // I18n
-    filterPanel.setBorder(border);
     GridBagConstraints c=new GridBagConstraints(0,y,1,1,0.0,0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
     panel.add(filterPanel,c);
 

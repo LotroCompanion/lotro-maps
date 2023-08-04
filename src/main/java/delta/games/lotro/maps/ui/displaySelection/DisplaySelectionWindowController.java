@@ -20,6 +20,7 @@ import delta.games.lotro.maps.ui.displaySelection.filter.DisplaySelectionFilterC
 import delta.games.lotro.maps.ui.displaySelection.filter.DisplaySelectionItemsFilter;
 import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionPanelController;
 import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionTableController;
+import delta.games.lotro.maps.ui.displaySelection.visibility.DisplaySelectionVisibilityEditionPanelController;
 
 /**
  * Controller for the display selection window.
@@ -38,6 +39,7 @@ public class DisplaySelectionWindowController extends DefaultWindowController
   private DisplaySelectionFilterController _filterController;
   private DisplaySelectionPanelController _panelController;
   private DisplaySelectionTableController _tableController;
+  private DisplaySelectionVisibilityEditionPanelController _visibilityController;
 
   /**
    * Constructor.
@@ -56,6 +58,7 @@ public class DisplaySelectionWindowController extends DefaultWindowController
     _tableController=new DisplaySelectionTableController(displaySelection,categoriesMgr,_filter,filter,visibilityListener);
     _panelController=new DisplaySelectionPanelController(this,_tableController);
     _filterController=new DisplaySelectionFilterController(categoriesMgr,_filter,_panelController);
+    _visibilityController=new DisplaySelectionVisibilityEditionPanelController(_tableController,displaySelection,_filter,visibilityListener);
   }
 
   @Override
@@ -88,12 +91,17 @@ public class DisplaySelectionWindowController extends DefaultWindowController
     JPanel filterPanel=_filterController.getPanel();
     TitledBorder filterBorder=GuiFactory.buildTitledBorder("Filter"); // I18n
     filterPanel.setBorder(filterBorder);
+    JPanel visibilityPanel=_visibilityController.getPanel();
+    TitledBorder visibilityBorder=GuiFactory.buildTitledBorder("Visibility"); // I18n
+    visibilityPanel.setBorder(visibilityBorder);
     // Whole panel
     GridBagConstraints c=new GridBagConstraints(0,0,1,1,0,0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
     panel.add(filterPanel,c);
-    c=new GridBagConstraints(1,0,1,1,1,0,GridBagConstraints.WEST,GridBagConstraints.HORIZONTAL,new Insets(0,0,0,0),0,0);
+    c=new GridBagConstraints(1,0,1,1,0,0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets(0,0,0,0),0,0);
+    panel.add(visibilityPanel,c);
+    c=new GridBagConstraints(2,0,1,1,1,0,GridBagConstraints.WEST,GridBagConstraints.HORIZONTAL,new Insets(0,0,0,0),0,0);
     panel.add(GuiFactory.buildPanel(null),c);
-    c=new GridBagConstraints(0,1,2,1,1,1,GridBagConstraints.WEST,GridBagConstraints.BOTH,new Insets(0,0,0,0),0,0);
+    c=new GridBagConstraints(0,1,3,1,1,1,GridBagConstraints.WEST,GridBagConstraints.BOTH,new Insets(0,0,0,0),0,0);
     panel.add(tablePanel,c);
     return panel;
   }
@@ -106,11 +114,7 @@ public class DisplaySelectionWindowController extends DefaultWindowController
   {
     saveBoundsPreferences();
     super.dispose();
-    if (_tableController!=null)
-    {
-      _tableController.dispose();
-      _tableController=null;
-    }
+    _filter=null;
     if (_filterController!=null)
     {
       _filterController.dispose();
@@ -120,6 +124,16 @@ public class DisplaySelectionWindowController extends DefaultWindowController
     {
       _panelController.dispose();
       _panelController=null;
+    }
+    if (_tableController!=null)
+    {
+      _tableController.dispose();
+      _tableController=null;
+    }
+    if (_visibilityController!=null)
+    {
+      _visibilityController.dispose();
+      _visibilityController=null;
     }
   }
 }
