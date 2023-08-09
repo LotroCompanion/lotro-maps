@@ -10,39 +10,39 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.ui.swing.panels.AbstractPanelController;
+import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.common.ui.swing.text.DynamicTextEditionController;
 import delta.common.ui.swing.text.TextListener;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.markers.filters.MapMarkersFilter;
-import delta.games.lotro.maps.ui.MapCanvas;
 
 /**
  * Controller for a map filter edition panel.
  * @author DAM
  */
-public class MapFilterPanelController
+public class MapFilterPanelController extends AbstractPanelController
 {
   // Data
   private MapMarkersFilter _filter;
   // GUI
-  private JPanel _panel;
   private JTextField _contains;
   // Controllers
   private CategoryChooserController _categoryChooser;
   private DynamicTextEditionController _textController;
-  private MapCanvas _mapCanvas;
+  private FilterUpdateListener _listener;
 
   /**
    * Constructor.
    * @param categoriesManager Categories manager.
-   * @param mapCanvas Associated map canvas.
+   * @param listener Filter updates listener.
    */
-  public MapFilterPanelController(CategoriesManager categoriesManager, MapCanvas mapCanvas)
+  public MapFilterPanelController(CategoriesManager categoriesManager, FilterUpdateListener listener)
   {
     _filter=new MapMarkersFilter();
-    _mapCanvas=mapCanvas;
     buildCategoriesChooser(categoriesManager);
     initCategoriesFilter(categoriesManager);
+    _listener=listener;
   }
 
   /**
@@ -75,13 +75,15 @@ public class MapFilterPanelController
    */
   public JPanel getPanel()
   {
-    if (_panel==null)
+    JPanel panel=super.getPanel();
+    if (panel==null)
     {
-      _panel=build();
+      panel=build();
+      setPanel(panel);
       setFilter();
       filterUpdated();
     }
-    return _panel;
+    return panel;
   }
 
   private void setFilter()
@@ -159,8 +161,7 @@ public class MapFilterPanelController
    */
   public void filterUpdated()
   {
-    // Repaint the associated map
-    _mapCanvas.repaint();
+    _listener.filterUpdated();
   }
 
   /**
@@ -168,6 +169,7 @@ public class MapFilterPanelController
    */
   public void dispose()
   {
+    super.dispose();
     // Data
     _filter=null;
     // Controllers
@@ -182,11 +184,7 @@ public class MapFilterPanelController
       _textController=null;
     }
     // GUI
-    if (_panel!=null)
-    {
-      _panel.removeAll();
-      _panel=null;
-    }
     _contains=null;
+    _listener=null;
   }
 }

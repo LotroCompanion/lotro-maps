@@ -9,6 +9,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,8 +20,6 @@ import javax.swing.JPanel;
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.labels.LabelWithHalo;
 import delta.games.lotro.maps.ui.controllers.SelectionController;
-import delta.games.lotro.maps.ui.filter.FilterButtonController;
-import delta.games.lotro.maps.ui.filter.MapFilterPanelController;
 import delta.games.lotro.maps.ui.layers.Layer;
 import delta.games.lotro.maps.ui.layers.MarkersLayer;
 import delta.games.lotro.maps.ui.layersmgr.LayersButtonController;
@@ -36,7 +36,9 @@ import delta.games.lotro.maps.ui.selection.SelectionManager;
  * <li>a map view panel,
  * <li>a location display,
  * <li>a 'labeled' checkbox,
- * <li>zoom/pan controllers.
+ * <li>zoom/pan controllers,
+ * <li>layers management,
+ * <li>support for pluggable buttons.
  * </ul>
  * @author DAM
  */
@@ -48,11 +50,11 @@ public class MapPanelController
   private MapLocationController _locationController;
   private MapLocationPanelController _locationDisplay;
   private SelectionManager _selectionManager;
-  private FilterButtonController _filterButton;
   private LayersButtonController _layersButton;
   // UI
   private JLayeredPane _layers;
   private JPanel _labeled;
+  private List<JButton> _buttons; 
 
   /**
    * Constructor.
@@ -82,18 +84,10 @@ public class MapPanelController
     // - labeled checkbox
     _labeled=buildLabeledCheckboxPanel();
     _layers.add(_labeled,Integer.valueOf(1),0);
+    // Buttons
+    _buttons=new ArrayList<JButton>();
     // Layers manager
     addLayersButton();
-  }
-
-  /**
-   * Add the filter button.
-   * @param mapFilterCtrl Filter UI.
-   */
-  public void addFilterButton(MapFilterPanelController mapFilterCtrl)
-  {
-    _filterButton=new FilterButtonController(mapFilterCtrl);
-    _layers.add(_filterButton.getTriggerButton(),Integer.valueOf(1),0);
   }
 
   /**
@@ -112,7 +106,7 @@ public class MapPanelController
     };
     layersMgrController.setListener(listener);
     _layersButton=new LayersButtonController(layersMgrController);
-    _layers.add(_layersButton.getTriggerButton(),Integer.valueOf(1),0);
+    addButton(_layersButton.getTriggerButton());
   }
 
   private void initZoomController()
@@ -253,6 +247,16 @@ public class MapPanelController
   }
 
   /**
+   * Add a button.
+   * @param triggerButton Button to add.
+   */
+  public void addButton(JButton triggerButton)
+  {
+    _layers.add(triggerButton,Integer.valueOf(1),0);
+    _buttons.add(triggerButton);
+  }
+
+  /**
    * Set the size of the managed view.
    * @param viewSize Size to set.
    */
@@ -270,19 +274,11 @@ public class MapPanelController
     _labeled.setLocation(viewSize.width-_labeled.getWidth()-10,17);
     // Place the 'layers' button
     int x=10;
-    if (_layersButton!=null)
+    for(JButton button : _buttons)
     {
-      JButton layersButton=_layersButton.getTriggerButton();
-      layersButton.setLocation(x,17);
-      layersButton.setSize(layersButton.getPreferredSize());
-      x+=layersButton.getPreferredSize().width+10;
-    }
-    // Place the 'filter' button
-    if (_filterButton!=null)
-    {
-      JButton filterButton=_filterButton.getTriggerButton();
-      filterButton.setLocation(x,17);
-      filterButton.setSize(filterButton.getPreferredSize());
+      button.setLocation(x,17);
+      button.setSize(button.getPreferredSize());
+      x+=button.getPreferredSize().width+10;
     }
     _canvas.repaint();
   }
@@ -318,11 +314,6 @@ public class MapPanelController
       _locationController.dispose();
       _locationController=null;
     }
-    if (_filterButton!=null)
-    {
-      _filterButton.dispose();
-      _filterButton=null;
-    }
     if (_layersButton!=null)
     {
       _layersButton.dispose();
@@ -331,5 +322,6 @@ public class MapPanelController
     // UI
     _layers=null;
     _labeled=null;
+    _buttons=null;
   }
 }

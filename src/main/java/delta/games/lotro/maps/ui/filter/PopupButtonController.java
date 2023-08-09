@@ -1,43 +1,45 @@
 package delta.games.lotro.maps.ui.filter;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.Border;
 
 import delta.common.ui.swing.GuiFactory;
+import delta.common.ui.swing.panels.AbstractPanelController;
 
 /**
- * Controller for a filter button that triggers the filter UI.
+ * Controller for a popup button that triggers a panel.
  * @author DAM
  */
-public class FilterButtonController
+public class PopupButtonController
 {
   // UI
   private JPanel _panel;
   private JButton _triggerButton;
   private Popup _popup;
   // Controllers
-  private MapFilterPanelController _filterController;
+  private AbstractPanelController _popupPanelController;
 
   /**
    * Constructor.
-   * @param filterController Filter controller.
+   * @param popupPanelController Controller for the managed panel.
    */
-  public FilterButtonController(MapFilterPanelController filterController)
+  public PopupButtonController(AbstractPanelController popupPanelController)
   {
-    _filterController=filterController;
+    _popupPanelController=popupPanelController;
     build();
   }
 
   /**
-   * Get the button used to trigger the popup for the filter UI.
+   * Get the button used to trigger the popup panel.
    * @return A button.
    */
   public JButton getTriggerButton()
@@ -48,7 +50,7 @@ public class FilterButtonController
   private void build()
   {
     _panel=buildPanel();
-    _triggerButton=GuiFactory.buildButton("Filter...");
+    _triggerButton=GuiFactory.buildButton("...");
     ActionListener al=new ActionListener()
     {
       public void actionPerformed(ActionEvent event)
@@ -64,7 +66,14 @@ public class FilterButtonController
       }
     };
     _triggerButton.addActionListener(al);
-    JButton closeButton=_filterController.getCategoryChooser().getCloseButton();
+  }
+
+  /**
+   * Define a button as a button that will close the managed popup.
+   * @param closeButton Button to customize.
+   */
+  public void addCloseButton(JButton closeButton)
+  {
     ActionListener alClose=new ActionListener()
     {
       public void actionPerformed(ActionEvent event)
@@ -99,12 +108,12 @@ public class FilterButtonController
 
   private JPanel buildPanel()
   {
-    JPanel panel=GuiFactory.buildBackgroundPanel(new BorderLayout());
-    JPanel filterPanel=_filterController.getPanel();
-    TitledBorder border=GuiFactory.buildTitledBorder("Filter");
+    JPanel filterPanel=_popupPanelController.getPanel();
+    Border emptyBorder=BorderFactory.createEmptyBorder(5,5,5,5);
+    Border blackBorder=BorderFactory.createLineBorder(Color.black,2);
+    Border border=BorderFactory.createCompoundBorder(emptyBorder,blackBorder);
     filterPanel.setBorder(border);
-    panel.add(filterPanel,BorderLayout.CENTER);
-    return panel;
+    return filterPanel;
   }
 
   /**
@@ -121,10 +130,10 @@ public class FilterButtonController
     _triggerButton=null;
     _popup=null;
     // Controllers
-    if (_filterController!=null)
+    if (_popupPanelController!=null)
     {
-      _filterController.dispose();
-      _filterController=null;
+      _popupPanelController.dispose();
+      _popupPanelController=null;
     }
   }
 }

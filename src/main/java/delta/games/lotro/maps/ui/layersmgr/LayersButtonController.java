@@ -84,6 +84,7 @@ public class LayersButtonController
     Point p=_triggerButton.getLocationOnScreen();
     int x=p.x;
     int y=p.y+_triggerButton.getHeight();
+    // Update the managed panel so that it actually displays its managed layers
     _layersDisplayController.update();
     _popup=popupFactory.getPopup(_triggerButton,_panel,x,y);
     _popup.show();
