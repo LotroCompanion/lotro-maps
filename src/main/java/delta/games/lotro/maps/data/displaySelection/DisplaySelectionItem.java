@@ -31,6 +31,30 @@ public class DisplaySelectionItem implements Identifiable
     _visible=true;
   }
 
+  /**
+   * Constructor.
+   * @param markers Markers (cannot be empty).
+   */
+  public DisplaySelectionItem(List<Marker> markers)
+  {
+    _reference=markers.get(0);
+    _markers=new ArrayList<Marker>(markers);
+    _positions=null;
+    _visible=true;
+  }
+
+  /**
+   * Set the markers.
+   * @param markers Markers (cannot be empty).
+   */
+  public void setMarkers(List<Marker> markers)
+  {
+    _reference=markers.get(0);
+    _markers.clear();
+    _markers.addAll(markers);
+    _positions=null;
+  }
+
   @Override
   public int getIdentifier()
   {

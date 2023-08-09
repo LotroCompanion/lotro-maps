@@ -25,6 +25,7 @@ public class DisplaySelectionTableController
 {
   // Data
   private DisplaySelection _data;
+  private List<DisplaySelectionItem> _items;
   // GUI
   private JTable _table;
   private GenericTableController<DisplaySelectionItem> _tableController;
@@ -48,8 +49,9 @@ public class DisplaySelectionTableController
 
   private GenericTableController<DisplaySelectionItem> buildTable(CategoriesManager categoriesMgr, FilterUpdateListener listener)
   {
-    List<DisplaySelectionItem> items=_data.getItems();
-    ListDataProvider<DisplaySelectionItem> provider=new ListDataProvider<DisplaySelectionItem>(items);
+    _items=new ArrayList<DisplaySelectionItem>();
+    _items.addAll(_data.getItems());
+    ListDataProvider<DisplaySelectionItem> provider=new ListDataProvider<DisplaySelectionItem>(_items);
     GenericTableController<DisplaySelectionItem> table=new GenericTableController<DisplaySelectionItem>(provider);
     // Columns
     List<TableColumnController<DisplaySelectionItem,?>> columns=DisplaySelectionColumnsBuilder.buildColumns(categoriesMgr,listener);
@@ -88,6 +90,16 @@ public class DisplaySelectionTableController
   public GenericTableController<DisplaySelectionItem> getTableController()
   {
     return _tableController;
+  }
+
+  /**
+   * Refresh table contents.
+   */
+  public void refresh()
+  {
+    _items.clear();
+    _items.addAll(_data.getItems());
+    _tableController.refresh();
   }
 
   /**

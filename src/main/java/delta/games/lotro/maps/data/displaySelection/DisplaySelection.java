@@ -47,6 +47,58 @@ public class DisplaySelection
   }
 
   /**
+   * Set the markers.
+   * @param markers Markers to set.
+   */
+  public void setMarkers(List<Marker> markers)
+  {
+    // Keep state of current selection items (update data)
+    // - sort markers
+    Map<Integer,List<Marker>> sortedMarkers=sortMarkers(markers);
+    Set<Integer> idsToRemove=new HashSet<Integer>(_items.keySet());
+    for(Integer key : sortedMarkers.keySet())
+    {
+      // Remove the current key for the IDs to remove
+      idsToRemove.remove(key);
+      List<Marker> markersForID=sortedMarkers.get(key);
+      DisplaySelectionItem selectionItem=_items.get(key);
+      if (selectionItem==null)
+      {
+        // New ID
+        selectionItem=new DisplaySelectionItem(markersForID);
+        _items.put(key,selectionItem);
+      }
+      else
+      {
+        // Updated ID
+        selectionItem.setMarkers(markersForID);
+      }
+    }
+    // - remove no more used IDs
+    for(Integer id : idsToRemove)
+    {
+      _items.remove(id);
+    }
+  }
+
+  private Map<Integer,List<Marker>> sortMarkers(List<Marker> markers)
+  {
+    Map<Integer,List<Marker>> ret=new HashMap<Integer,List<Marker>>();
+    for(Marker marker : markers)
+    {
+      Integer key=Integer.valueOf(marker.getDid());
+      List<Marker> list=ret.get(key);
+      if (list==null)
+      {
+        list=new ArrayList<Marker>();
+        ret.put(key,list);
+      }
+      list.add(marker);
+    }
+    return ret;
+  }
+
+  /**
    * Add a marker.
    * @param marker Marker to add.
    */

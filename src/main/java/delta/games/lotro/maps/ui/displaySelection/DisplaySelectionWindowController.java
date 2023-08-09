@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.common.ui.swing.windows.DefaultWindowController;
 import delta.common.ui.swing.windows.WindowController;
+import delta.games.lotro.maps.data.Marker;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
 import delta.games.lotro.maps.data.markers.filters.DisplaySelectionFilter;
@@ -34,7 +36,9 @@ public class DisplaySelectionWindowController extends DefaultWindowController
   public static final String IDENTIFIER="DISPLAY_SELECTION";
 
   // Data
-  private DisplaySelectionItemsFilter _filter;
+  private DisplaySelection _displaySelection;
+  private DisplaySelectionFilter _filter;
+  private DisplaySelectionItemsFilter _itemsFilter;
   // Controllers
   private DisplaySelectionFilterController _filterController;
   private DisplaySelectionPanelController _panelController;
@@ -45,20 +49,48 @@ public class DisplaySelectionWindowController extends DefaultWindowController
    * Constructor.
    * @param parent Parent window.
    * @param categoriesMgr Categories manager.
-   * @param filter Display selection filter.
    * @param visibilityListener Visibility update listener.
-   * @param displaySelection Display selection.
    */
   public DisplaySelectionWindowController(WindowController parent, CategoriesManager categoriesMgr,
-      DisplaySelectionFilter filter, FilterUpdateListener visibilityListener, 
-      DisplaySelection displaySelection)
+      FilterUpdateListener visibilityListener)
   {
     super(parent);
-    _filter=new DisplaySelectionItemsFilter();
-    _tableController=new DisplaySelectionTableController(displaySelection,categoriesMgr,_filter,filter,visibilityListener);
+    _displaySelection=new DisplaySelection();
+    _filter=new DisplaySelectionFilter(_displaySelection);
+    _itemsFilter=new DisplaySelectionItemsFilter();
+    _tableController=new DisplaySelectionTableController(_displaySelection,categoriesMgr,_itemsFilter,_filter,visibilityListener);
     _panelController=new DisplaySelectionPanelController(this,_tableController);
-    _filterController=new DisplaySelectionFilterController(categoriesMgr,_filter,_panelController);
-    _visibilityController=new DisplaySelectionVisibilityEditionPanelController(_tableController,displaySelection,_filter,visibilityListener);
+    _filterController=new DisplaySelectionFilterController(categoriesMgr,_itemsFilter,_panelController);
+    _visibilityController=new DisplaySelectionVisibilityEditionPanelController(_tableController,_displaySelection,_itemsFilter,visibilityListener);
+  }
+
+  /**
+   * Get the managed display selection.
+   * @return a display selection.
+   */
+  public DisplaySelection getDisplaySelection()
+  {
+    return _displaySelection;
+  }
+
+  /**
+   * Get the managed filter.
+   * @return the managed filter.
+   */
+  public DisplaySelectionFilter getFilter()
+  {
+    return _filter;
+  }
+
+  /**
+   * Set the markers to use.
+   * @param markers Markers to use.
+   */
+  public void setMarkers(List<Marker> markers)
+  {
+    _displaySelection.setMarkers(markers);
+    _tableController.refresh();
+    _panelController.filterUpdated();
   }
 
   @Override
@@ -106,6 +138,12 @@ public class DisplaySelectionWindowController extends DefaultWindowController
     return panel;
   }
 
+  @Override
+  protected void doWindowClosing()
+  {
+    hide();
+  }
+
   /**
    * Release all managed resources.
    */
@@ -114,7 +152,7 @@ public class DisplaySelectionWindowController extends DefaultWindowController
   {
     saveBoundsPreferences();
     super.dispose();
-    _filter=null;
+    _itemsFilter=null;
     if (_filterController!=null)
     {
       _filterController.dispose();

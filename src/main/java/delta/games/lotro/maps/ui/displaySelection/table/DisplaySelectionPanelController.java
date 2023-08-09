@@ -39,6 +39,7 @@ public class DisplaySelectionPanelController implements FilterUpdateListener
     _parent=parent;
     _tableController=tableController;
     _windowsManager=new WindowsManager();
+    getPanel();
   }
 
   /**

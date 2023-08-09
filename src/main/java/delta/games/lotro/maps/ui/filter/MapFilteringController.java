@@ -1,5 +1,13 @@
 package delta.games.lotro.maps.ui.filter;
 
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.JButton;
+
+import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.misc.Disposable;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.common.utils.collections.filters.CompoundFilter;
@@ -10,6 +18,7 @@ import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.markers.filters.MapMarkersFilter;
 import delta.games.lotro.maps.ui.MapCanvas;
 import delta.games.lotro.maps.ui.MapPanelController;
+import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionWindowController;
 
 /**
  * Controller for filtering features on maps.
@@ -20,9 +29,12 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
   // Data
   private Filter<Marker> _filter;
   // Controllers
+  // - basic filter
   private MapFilterPanelController _basicFilter;
   private PopupButtonController _filterButton;
-  //TODO Add detailed filter
+  // - display selection
+  private DisplaySelectionWindowController _displaySelection;
+  // - map
   private MapPanelController _mapPanel;
 
   /**
@@ -34,6 +46,8 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
   {
     _mapPanel=mapPanel;
     _basicFilter=new MapFilterPanelController(categoriesMgr,this);
+    _displaySelection=new DisplaySelectionWindowController(null,categoriesMgr,this);
+    //_displaySelection.automaticLocationSetup();
     buildFilter();
   }
 
@@ -42,17 +56,45 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
    */
   public void addFilterButtons()
   {
+    // Basic filter button
     _filterButton=new PopupButtonController(_basicFilter);
     _filterButton.addCloseButton(_basicFilter.getCategoryChooser().getCloseButton());
     _filterButton.getTriggerButton().setText("Filter...");
     _mapPanel.addButton(_filterButton.getTriggerButton());
+    // Display selection
+    JButton displaySelectionButton=buildDisplaySelectionButton();
+    _mapPanel.addButton(displaySelectionButton);
+  }
+
+  private JButton buildDisplaySelectionButton()
+  {
+    JButton ret=GuiFactory.buildButton("Selection...");
+    ActionListener al=new ActionListener()
+    {
+      
+      @Override
+      public void actionPerformed(ActionEvent e)
+      {
+        Window window=_displaySelection.getWindow();
+        if (window.isVisible())
+        {
+          _displaySelection.hide();
+        }
+        else
+        {
+          _displaySelection.show();
+        }
+      }
+    };
+    ret.addActionListener(al);
+    return ret;
   }
 
   private void buildFilter()
   {
     CompoundFilter<Marker> filter=new CompoundFilter<Marker>(Operator.AND);
     filter.addFilter(_basicFilter.getFilter());
-    // TODO Add display selection filter
+    filter.addFilter(_displaySelection.getFilter());
     _filter=filter;
   }
 
@@ -84,6 +126,15 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
     canvas.repaint();
   }
 
+  /**
+   * Set the markers to use.
+   * @param markers Markers to use.
+   */
+  public void setMarkers(List<Marker> markers)
+  {
+    _displaySelection.setMarkers(markers);
+  }
+
   @Override
   public void dispose()
   {
@@ -99,6 +150,11 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
     {
       _filterButton.dispose();
       _filterButton=null;
+    }
+    if (_displaySelection!=null)
+    {
+      _displaySelection.dispose();
+      _displaySelection=null;
     }
     _mapPanel=null;
   }

@@ -25,10 +25,10 @@ public class DisplaySelectionItemsFilter implements Filter<DisplaySelectionItem>
   public DisplaySelectionItemsFilter()
   {
     List<Filter<DisplaySelectionItem>> filters=new ArrayList<Filter<DisplaySelectionItem>>();
-    // Command
+    // Name
     _nameFilter=new DisplaySelectionItemNameFilter();
     filters.add(_nameFilter);
-    // Auto
+    // Category
     _categoryFilter=new DisplaySelectionItemCategoryFilter(null);
     filters.add(_categoryFilter);
     _filter=new CompoundFilter<DisplaySelectionItem>(Operator.AND,filters);
