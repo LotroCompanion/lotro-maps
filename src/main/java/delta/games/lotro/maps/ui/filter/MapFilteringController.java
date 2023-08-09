@@ -1,5 +1,6 @@
 package delta.games.lotro.maps.ui.filter;
 
+import delta.common.ui.swing.misc.Disposable;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.common.utils.collections.filters.CompoundFilter;
 import delta.common.utils.collections.filters.Filter;
@@ -14,7 +15,7 @@ import delta.games.lotro.maps.ui.MapPanelController;
  * Controller for filtering features on maps.
  * @author DAM
  */
-public class MapFilteringController implements FilterUpdateListener
+public class MapFilteringController implements FilterUpdateListener,Disposable
 {
   // Data
   private Filter<Marker> _filter;
@@ -81,5 +82,24 @@ public class MapFilteringController implements FilterUpdateListener
     // Repaint the associated map
     MapCanvas canvas=_mapPanel.getCanvas();
     canvas.repaint();
+  }
+
+  @Override
+  public void dispose()
+  {
+    // Data
+    _filter=null;
+    // Controllers
+    if (_basicFilter!=null)
+    {
+      _basicFilter.dispose();
+      _basicFilter=null;
+    }
+    if (_filterButton!=null)
+    {
+      _filterButton.dispose();
+      _filterButton=null;
+    }
+    _mapPanel=null;
   }
 }
