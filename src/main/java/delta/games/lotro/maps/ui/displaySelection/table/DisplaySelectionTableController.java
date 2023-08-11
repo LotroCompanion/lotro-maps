@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 
 import delta.common.ui.swing.tables.GenericTableController;
 import delta.common.ui.swing.tables.ListDataProvider;
@@ -138,6 +139,7 @@ public class DisplaySelectionTableController
     if (_table==null)
     {
       _table=_tableController.getTable();
+      _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
     return _table;
   }
