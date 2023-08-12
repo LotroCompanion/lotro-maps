@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -22,6 +23,7 @@ import delta.common.ui.swing.text.TextListener;
 import delta.common.utils.collections.filters.Filter;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.categories.Category;
+import delta.games.lotro.maps.data.categories.comparators.CategoryNameComparator;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
 
 /**
@@ -180,6 +182,7 @@ public class DisplaySelectionFilterController implements ActionListener
     ComboBoxController<Integer> ctrl=new ComboBoxController<Integer>();
     ctrl.addEmptyItem("");
     List<Category> categories=_categoriesMgr.getAllSortedByCode();
+    Collections.sort(categories,new CategoryNameComparator());
     for(Category category : categories)
     {
       Integer code=Integer.valueOf(category.getCode());
