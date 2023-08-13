@@ -10,6 +10,7 @@ import delta.games.lotro.maps.data.Marker;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
 import delta.games.lotro.maps.data.markers.MarkersFinder;
+import delta.games.lotro.maps.data.markers.filters.MapMarkersFilter;
 
 /**
  * Test for the display selection UI.
@@ -55,7 +56,8 @@ public class MainTestDisplaySelectionUI
         System.out.println("Selection changed: "+ds[0].toString());
       }
     };
-    DisplaySelectionWindowController ctrl=new DisplaySelectionWindowController(null,categoriesMgr,listener);
+    MapMarkersFilter basicFilter=new MapMarkersFilter();
+    DisplaySelectionWindowController ctrl=new DisplaySelectionWindowController(null,categoriesMgr,basicFilter,listener);
     ds[0]=ctrl.getDisplaySelection();
     ctrl.setMarkers(markers);
     ctrl.show();

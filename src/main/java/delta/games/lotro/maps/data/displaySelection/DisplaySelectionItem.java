@@ -44,6 +44,15 @@ public class DisplaySelectionItem implements Identifiable
   }
 
   /**
+   * Get the reference marker.
+   * @return the reference marker.
+   */
+  public Marker getReferenceMarker()
+  {
+    return _reference;
+  }
+
+  /**
    * Set the markers.
    * @param markers Markers (cannot be empty).
    */

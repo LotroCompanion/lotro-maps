@@ -6,6 +6,7 @@ import java.util.List;
 import delta.common.utils.collections.filters.CompoundFilter;
 import delta.common.utils.collections.filters.Filter;
 import delta.common.utils.collections.filters.Operator;
+import delta.games.lotro.maps.data.Marker;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
 
 /**
@@ -22,8 +23,9 @@ public class DisplaySelectionItemsFilter implements Filter<DisplaySelectionItem>
 
   /**
    * Constructor.
+   * @param markersFilter Filter on markers.
    */
-  public DisplaySelectionItemsFilter()
+  public DisplaySelectionItemsFilter(Filter<Marker> markersFilter)
   {
     List<Filter<DisplaySelectionItem>> filters=new ArrayList<Filter<DisplaySelectionItem>>();
     // Name
@@ -35,6 +37,12 @@ public class DisplaySelectionItemsFilter implements Filter<DisplaySelectionItem>
     // Visibility
     _visibilityFilter=new DisplaySelectionItemVisibilityFilter(null);
     filters.add(_visibilityFilter);
+    // Markers filter
+    if (markersFilter!=null)
+    {
+      DisplaySelectionMapMarkersFilter filter=new DisplaySelectionMapMarkersFilter(markersFilter);
+      filters.add(filter);
+    }
     _filter=new CompoundFilter<DisplaySelectionItem>(Operator.AND,filters);
   }
 

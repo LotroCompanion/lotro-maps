@@ -46,8 +46,8 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
   {
     _mapPanel=mapPanel;
     _basicFilter=new MapFilterPanelController(categoriesMgr,this);
-    _displaySelection=new DisplaySelectionWindowController(null,categoriesMgr,this);
-    //_displaySelection.automaticLocationSetup();
+    MapMarkersFilter basicFilter=_basicFilter.getFilter();
+    _displaySelection=new DisplaySelectionWindowController(null,categoriesMgr,basicFilter,this);
     buildFilter();
   }
 
@@ -116,11 +116,26 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
     return _filter;
   }
 
+  private boolean _inUpdate;
   /**
    * Called when the managed filter was updated.
    */
   public void filterUpdated()
   {
+    // This may be called when either the markers filter is updated,
+    // or the display selection filter is updated.
+    if (!_inUpdate)
+    {
+      try
+      {
+        _inUpdate=true;
+        _displaySelection.filterUpdated();
+      }
+      finally
+      {
+        _inUpdate=false;
+      }
+    }
     // Repaint the associated map
     MapCanvas canvas=_mapPanel.getCanvas();
     canvas.repaint();
