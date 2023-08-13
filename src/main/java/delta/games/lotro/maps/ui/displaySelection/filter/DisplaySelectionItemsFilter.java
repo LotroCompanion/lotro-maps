@@ -18,6 +18,7 @@ public class DisplaySelectionItemsFilter implements Filter<DisplaySelectionItem>
 
   private DisplaySelectionItemNameFilter _nameFilter;
   private DisplaySelectionItemCategoryFilter _categoryFilter;
+  private DisplaySelectionItemVisibilityFilter _visibilityFilter;
 
   /**
    * Constructor.
@@ -31,6 +32,9 @@ public class DisplaySelectionItemsFilter implements Filter<DisplaySelectionItem>
     // Category
     _categoryFilter=new DisplaySelectionItemCategoryFilter(null);
     filters.add(_categoryFilter);
+    // Visibility
+    _visibilityFilter=new DisplaySelectionItemVisibilityFilter(null);
+    filters.add(_visibilityFilter);
     _filter=new CompoundFilter<DisplaySelectionItem>(Operator.AND,filters);
   }
 
@@ -50,6 +54,15 @@ public class DisplaySelectionItemsFilter implements Filter<DisplaySelectionItem>
   public DisplaySelectionItemCategoryFilter getCategoryFilter()
   {
     return _categoryFilter;
+  }
+
+  /**
+   * Get the filter on the visibility.
+   * @return a filter on the visibility.
+   */
+  public DisplaySelectionItemVisibilityFilter getVisibilityFilter()
+  {
+    return _visibilityFilter;
   }
 
   @Override

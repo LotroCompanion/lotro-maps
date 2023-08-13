@@ -43,6 +43,8 @@ public class DisplaySelectionFilterController implements ActionListener
   private DynamicTextEditionController _textController;
   // - category filter
   private ComboBoxController<Integer> _categories;
+  // - visibility filter
+  private ComboBoxController<Boolean> _visibility;
   // Filter update listener
   private FilterUpdateListener _filterUpdateListener;
 
@@ -99,6 +101,7 @@ public class DisplaySelectionFilterController implements ActionListener
     {
       _categories.selectItem(null);
       _contains.setText("");
+      _visibility.selectItem(null);
     }
   }
 
@@ -115,6 +118,10 @@ public class DisplaySelectionFilterController implements ActionListener
     DisplaySelectionItemCategoryFilter categoryFilter=_filter.getCategoryFilter();
     Integer categoryCode=categoryFilter.getCategoryCode();
     _categories.selectItem(categoryCode);
+    // Visibility
+    DisplaySelectionItemVisibilityFilter visibilityFilter=_filter.getVisibilityFilter();
+    Boolean visibility=visibilityFilter.getVisbility();
+    _visibility.selectItem(visibility);
   }
 
   private JPanel build()
@@ -170,8 +177,19 @@ public class DisplaySelectionFilterController implements ActionListener
       _categories=buildCategoriesCombobox();
       line1Panel.add(_categories.getComboBox());
     }
-    GridBagConstraints c=new GridBagConstraints(0,y,1,1,1.0,0,GridBagConstraints.WEST,GridBagConstraints.HORIZONTAL,new Insets(0,0,5,0),0,0);
+    GridBagConstraints c=new GridBagConstraints(0,y,1,1,1.0,0,GridBagConstraints.WEST,GridBagConstraints.HORIZONTAL,new Insets(0,0,0,0),0,0);
     panel.add(line1Panel,c);
+    y++;
+    JPanel line2Panel=GuiFactory.buildPanel(new FlowLayout(FlowLayout.LEADING,5,0));
+    // Visibility
+    {
+      JLabel label=GuiFactory.buildLabel("Visible:"); // I18n
+      line2Panel.add(label);
+      _visibility=buildVisibilityCombobox();
+      line2Panel.add(_visibility.getComboBox());
+    }
+    c=new GridBagConstraints(0,y,1,1,1.0,0,GridBagConstraints.WEST,GridBagConstraints.HORIZONTAL,new Insets(0,0,5,0),0,0);
+    panel.add(line2Panel,c);
     y++;
 
     return panel;
@@ -203,6 +221,27 @@ public class DisplaySelectionFilterController implements ActionListener
     return ctrl;
   }
 
+  private ComboBoxController<Boolean> buildVisibilityCombobox()
+  {
+    ComboBoxController<Boolean> ctrl=new ComboBoxController<Boolean>();
+    ctrl.addEmptyItem("(all)");
+    ctrl.addItem(Boolean.TRUE,"True");
+    ctrl.addItem(Boolean.FALSE,"False");
+    ctrl.selectItem(null);
+    ItemSelectionListener<Boolean> listener=new ItemSelectionListener<Boolean>()
+    {
+      @Override
+      public void itemSelected(Boolean visibility)
+      {
+        DisplaySelectionItemVisibilityFilter filter=_filter.getVisibilityFilter();
+        filter.setVisibility(visibility);
+        filterUpdated();
+      }
+    };
+    ctrl.addListener(listener);
+    return ctrl;
+  }
+
  /**
    * Release all managed resources.
    */
@@ -221,6 +260,11 @@ public class DisplaySelectionFilterController implements ActionListener
     {
       _categories.dispose();
       _categories=null;
+    }
+    if (_visibility!=null)
+    {
+      _visibility.dispose();
+      _visibility=null;
     }
     // GUI
     if (_panel!=null)
