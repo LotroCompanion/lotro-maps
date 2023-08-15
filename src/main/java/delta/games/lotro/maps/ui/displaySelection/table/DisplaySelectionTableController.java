@@ -11,11 +11,11 @@ import delta.common.ui.swing.tables.ListDataProvider;
 import delta.common.ui.swing.tables.Sort;
 import delta.common.ui.swing.tables.TableColumnController;
 import delta.common.ui.swing.tables.TableColumnsManager;
-import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
 import delta.games.lotro.maps.data.markers.filters.DisplaySelectionFilter;
+import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionUpdateListener;
 import delta.games.lotro.maps.ui.displaySelection.filter.DisplaySelectionItemsFilter;
 
 /**
@@ -41,14 +41,14 @@ public class DisplaySelectionTableController
    */
   public DisplaySelectionTableController(DisplaySelection data, CategoriesManager categoriesMgr,
       DisplaySelectionItemsFilter itemsFilter,
-      DisplaySelectionFilter filter, FilterUpdateListener visibilityListener)
+      DisplaySelectionFilter filter, DisplaySelectionUpdateListener visibilityListener)
   {
     _data=data;
     _tableController=buildTable(categoriesMgr,visibilityListener);
     _tableController.setFilter(itemsFilter);
   }
 
-  private GenericTableController<DisplaySelectionItem> buildTable(CategoriesManager categoriesMgr, FilterUpdateListener listener)
+  private GenericTableController<DisplaySelectionItem> buildTable(CategoriesManager categoriesMgr, DisplaySelectionUpdateListener listener)
   {
     _items=new ArrayList<DisplaySelectionItem>();
     _items.addAll(_data.getItems());

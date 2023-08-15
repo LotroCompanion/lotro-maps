@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.games.lotro.maps.data.MapsManager;
 import delta.games.lotro.maps.data.Marker;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
@@ -48,10 +47,10 @@ public class MainTestDisplaySelectionUI
 
     CategoriesManager categoriesMgr=mapsManager.getCategories();
     DisplaySelection[] ds=new DisplaySelection[1];
-    FilterUpdateListener listener=new FilterUpdateListener()
+    DisplaySelectionUpdateListener listener=new DisplaySelectionUpdateListener()
     {
       @Override
-      public void filterUpdated()
+      public void displaySelectionUpdated()
       {
         System.out.println("Selection changed: "+ds[0].toString());
       }

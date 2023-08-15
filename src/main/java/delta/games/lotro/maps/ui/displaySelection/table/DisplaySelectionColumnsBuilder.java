@@ -7,11 +7,11 @@ import delta.common.ui.swing.tables.CellDataProvider;
 import delta.common.ui.swing.tables.CellDataUpdater;
 import delta.common.ui.swing.tables.DefaultTableColumnController;
 import delta.common.ui.swing.tables.TableColumnController;
-import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.games.lotro.maps.data.GeoPoints;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.categories.Category;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
+import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionUpdateListener;
 
 /**
  * Builds column definitions for display selection items.
@@ -35,7 +35,7 @@ public class DisplaySelectionColumnsBuilder
    * @param listener Filter update listener.
    * @return a list of columns.
    */
-  public static List<TableColumnController<DisplaySelectionItem,?>> buildColumns(CategoriesManager categoriesMgr, FilterUpdateListener listener)
+  public static List<TableColumnController<DisplaySelectionItem,?>> buildColumns(CategoriesManager categoriesMgr, DisplaySelectionUpdateListener listener)
   {
     List<TableColumnController<DisplaySelectionItem,?>> ret=new ArrayList<TableColumnController<DisplaySelectionItem,?>>();
     // Identifier
@@ -44,7 +44,7 @@ public class DisplaySelectionColumnsBuilder
       ret.add(buildIdentifierColumn());
     }
     // Visibility
-    ret.add(buildVisbilityColumn(listener));
+    ret.add(buildVisibilityColumn(listener));
     // Name
     ret.add(buildNameColumn());
     // Count
@@ -76,7 +76,7 @@ public class DisplaySelectionColumnsBuilder
    * @param listener Listener for updates.
    * @return a column.
    */
-  private static TableColumnController<DisplaySelectionItem,?> buildVisbilityColumn(final FilterUpdateListener listener)
+  private static TableColumnController<DisplaySelectionItem,?> buildVisibilityColumn(final DisplaySelectionUpdateListener listener)
   {
     CellDataProvider<DisplaySelectionItem,Boolean> visibleCell=new CellDataProvider<DisplaySelectionItem,Boolean>()
     {
@@ -101,7 +101,7 @@ public class DisplaySelectionColumnsBuilder
         // Broadcast filter change
         if (listener!=null)
         {
-          listener.filterUpdated();
+          listener.displaySelectionUpdated();
         }
       }
     };

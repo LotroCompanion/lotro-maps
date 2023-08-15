@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.swing.JButton;
 
+import org.apache.log4j.Logger;
+
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.misc.Disposable;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
@@ -18,14 +20,17 @@ import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.markers.filters.MapMarkersFilter;
 import delta.games.lotro.maps.ui.MapCanvas;
 import delta.games.lotro.maps.ui.MapPanelController;
+import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionUpdateListener;
 import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionWindowController;
 
 /**
  * Controller for filtering features on maps.
  * @author DAM
  */
-public class MapFilteringController implements FilterUpdateListener,Disposable
+public class MapFilteringController implements FilterUpdateListener,DisplaySelectionUpdateListener,Disposable
 {
+  private static final Logger LOGGER=Logger.getLogger(MapFilteringController.class);
+
   // Data
   private Filter<Marker> _filter;
   // Controllers
@@ -116,27 +121,33 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
     return _filter;
   }
 
-  private boolean _inUpdate;
   /**
-   * Called when the managed filter was updated.
+   * Called when the managed filter was updated:
+   * <ul>
+   * <li>by the markers filter,
+   * <li>OR by the display selection filter.
+   * </ul>
    */
   public void filterUpdated()
   {
-    // This may be called when either the markers filter is updated,
-    // or the display selection filter is updated.
-    if (!_inUpdate)
-    {
-      try
-      {
-        _inUpdate=true;
-        _displaySelection.filterUpdated();
-      }
-      finally
-      {
-        _inUpdate=false;
-      }
-    }
+    LOGGER.debug("Map filter updated!");
+    // Update the table filter
+    LOGGER.debug("- update table filter");
+    _displaySelection.updateTableFilter();
     // Repaint the associated map
+    LOGGER.debug("- redraw");
+    repaintMap();
+  }
+
+  @Override
+  public void displaySelectionUpdated()
+  {
+    LOGGER.debug("Display selection update => redraw");
+    repaintMap();
+  }
+
+  private void repaintMap()
+  {
     MapCanvas canvas=_mapPanel.getCanvas();
     canvas.repaint();
   }
@@ -148,6 +159,7 @@ public class MapFilteringController implements FilterUpdateListener,Disposable
   public void setMarkers(List<Marker> markers)
   {
     _displaySelection.setMarkers(markers);
+    repaintMap();
   }
 
   @Override

@@ -10,8 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
+
 import delta.common.ui.swing.GuiFactory;
-import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.common.ui.swing.windows.DefaultWindowController;
 import delta.common.ui.swing.windows.WindowController;
 import delta.common.utils.collections.filters.Filter;
@@ -29,8 +30,10 @@ import delta.games.lotro.maps.ui.displaySelection.visibility.DisplaySelectionVis
  * Controller for the display selection window.
  * @author DAM
  */
-public class DisplaySelectionWindowController extends DefaultWindowController implements FilterUpdateListener
+public class DisplaySelectionWindowController extends DefaultWindowController implements DisplaySelectionUpdateListener
 {
+  private static final Logger LOGGER=Logger.getLogger(DisplaySelectionWindowController.class);
+
   /**
    * Identifier for this window.
    */
@@ -46,7 +49,7 @@ public class DisplaySelectionWindowController extends DefaultWindowController im
   private DisplaySelectionTableController _tableController;
   private DisplaySelectionVisibilityEditionPanelController _visibilityController;
   // Listeners
-  private FilterUpdateListener _visibilityListener;
+  private DisplaySelectionUpdateListener _visibilityListener;
 
   /**
    * Constructor.
@@ -57,14 +60,14 @@ public class DisplaySelectionWindowController extends DefaultWindowController im
    */
   public DisplaySelectionWindowController(WindowController parent, CategoriesManager categoriesMgr,
       Filter<Marker> markersFilter,
-      FilterUpdateListener visibilityListener)
+      DisplaySelectionUpdateListener visibilityListener)
   {
     super(parent);
     _visibilityListener=visibilityListener;
     _displaySelection=new DisplaySelection();
     _filter=new DisplaySelectionFilter(_displaySelection);
     _itemsFilter=new DisplaySelectionItemsFilter(markersFilter);
-    _tableController=new DisplaySelectionTableController(_displaySelection,categoriesMgr,_itemsFilter,_filter,visibilityListener);
+    _tableController=new DisplaySelectionTableController(_displaySelection,categoriesMgr,_itemsFilter,_filter,this);
     _panelController=new DisplaySelectionPanelController(this,_tableController);
     _filterController=new DisplaySelectionFilterController(categoriesMgr,_itemsFilter,_panelController);
     _visibilityController=new DisplaySelectionVisibilityEditionPanelController(_tableController,_displaySelection,_itemsFilter,this);
@@ -94,18 +97,30 @@ public class DisplaySelectionWindowController extends DefaultWindowController im
    */
   public void setMarkers(List<Marker> markers)
   {
+    LOGGER.debug("Set markers!");
     _displaySelection.setMarkers(markers);
+    LOGGER.debug("Refresh table!");
     _tableController.refresh();
-    filterUpdated();
+    LOGGER.debug("Update stats!");
+    _panelController.updateStatsLabel();
   }
 
   /**
-   * Called when the filter on display selection items has been updated.
+   * Called when the visibility of some items has been updated.
    */
-  public void filterUpdated()
+  public void displaySelectionUpdated()
+  {
+    updateTableFilter();
+    _panelController.updateStatsLabel();
+    _visibilityListener.displaySelectionUpdated();
+  }
+
+  /**
+   * Update the filter on the table.
+   */
+  public void updateTableFilter()
   {
     _panelController.filterUpdated();
-    _visibilityListener.filterUpdated();
   }
 
   @Override
@@ -188,5 +203,6 @@ public class DisplaySelectionWindowController extends DefaultWindowController im
       _visibilityController.dispose();
       _visibilityController=null;
     }
+    _visibilityListener=null;
   }
 }

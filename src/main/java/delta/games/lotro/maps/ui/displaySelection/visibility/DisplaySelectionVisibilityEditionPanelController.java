@@ -16,9 +16,9 @@ import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.panels.AbstractPanelController;
 import delta.common.ui.swing.selection.SelectionManager;
 import delta.common.ui.swing.tables.GenericTableController;
-import delta.common.ui.swing.tables.panel.FilterUpdateListener;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelection;
 import delta.games.lotro.maps.data.displaySelection.DisplaySelectionItem;
+import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionUpdateListener;
 import delta.games.lotro.maps.ui.displaySelection.filter.DisplaySelectionItemsFilter;
 import delta.games.lotro.maps.ui.displaySelection.table.DisplaySelectionTableController;
 
@@ -34,7 +34,7 @@ public class DisplaySelectionVisibilityEditionPanelController extends AbstractPa
   private DisplaySelection _displaySelection;
   private DisplaySelectionItemsFilter _itemsFilter;
   // Listeners
-  private FilterUpdateListener _visibilityListener;
+  private DisplaySelectionUpdateListener _visibilityListener;
 
   /**
    * Constructor.
@@ -45,7 +45,7 @@ public class DisplaySelectionVisibilityEditionPanelController extends AbstractPa
    */
   public DisplaySelectionVisibilityEditionPanelController(DisplaySelectionTableController tableController,
       DisplaySelection displaySelection, DisplaySelectionItemsFilter itemsFilter,
-      FilterUpdateListener visibilityListener)
+      DisplaySelectionUpdateListener visibilityListener)
   {
     super();
     _tableController=tableController;
@@ -175,7 +175,7 @@ public class DisplaySelectionVisibilityEditionPanelController extends AbstractPa
     if (changed)
     {
       // Update map
-      _visibilityListener.filterUpdated();
+      _visibilityListener.displaySelectionUpdated();
       // Update table
       GenericTableController<DisplaySelectionItem> tableCtrl=_tableController.getTableController();
       for(DisplaySelectionItem item : changedItems)
