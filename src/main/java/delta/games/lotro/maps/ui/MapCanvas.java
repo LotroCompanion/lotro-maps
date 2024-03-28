@@ -43,15 +43,15 @@ public class MapCanvas extends JPanel implements MapView
   private static final int SENSIBILITY=10;
 
   // View definition
-  private GeoReference _viewReference;
+  private transient GeoReference _viewReference;
   // Zoom filter
-  private ZoomFilter _zoomFilter;
+  private transient ZoomFilter _zoomFilter;
   // Map position constraints
-  private MapConstraint _constraint;
+  private transient MapConstraint _constraint;
   // Input controller
-  private ViewInputsManager _inputsMgr;
+  private transient ViewInputsManager _inputsMgr;
   // Layers
-  private List<Layer> _layers;
+  private transient List<Layer> _layers;
 
   /**
    * Constructor.

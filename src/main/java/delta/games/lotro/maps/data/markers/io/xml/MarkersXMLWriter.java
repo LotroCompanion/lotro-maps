@@ -45,7 +45,7 @@ public class MarkersXMLWriter
   {
     float longitude=point.getLongitude();
     float latitude=point.getLatitude();
-    String lonLatStr=String.valueOf(longitude)+"/"+String.valueOf(latitude);
+    String lonLatStr=String.valueOf(longitude)+"/"+latitude;
     attrs.addAttribute("","",attributeName,XmlWriter.CDATA,lonLatStr);
   }
 

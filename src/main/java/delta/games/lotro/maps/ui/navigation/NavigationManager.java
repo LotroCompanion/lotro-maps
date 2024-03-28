@@ -1,6 +1,7 @@
 package delta.games.lotro.maps.ui.navigation;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import delta.common.utils.ListenersManager;
 import delta.games.lotro.maps.ui.BasemapPanelController;
@@ -16,7 +17,7 @@ public class NavigationManager
   // Listeners
   private ListenersManager<NavigationListener> _navigationListeners;
   // Maps history
-  private Stack<MapViewDefinition> _navigationHistory;
+  private Deque<MapViewDefinition> _navigationHistory;
 
   /**
    * Constructor.
@@ -26,7 +27,7 @@ public class NavigationManager
   {
     _view=view;
     _navigationListeners=new ListenersManager<NavigationListener>();
-    _navigationHistory=new Stack<MapViewDefinition>();
+    _navigationHistory=new ArrayDeque<MapViewDefinition>();
   }
 
   /**
@@ -53,7 +54,7 @@ public class NavigationManager
    */
   public void back()
   {
-    if (_navigationHistory.size()==0)
+    if (_navigationHistory.isEmpty())
     {
       return;
     }

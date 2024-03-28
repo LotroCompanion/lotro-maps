@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -119,10 +120,11 @@ public class CategoryChooserController
 
   private void selectAll()
   {
-    for(Integer code : _checkboxes.keySet())
+    for(Map.Entry<Integer,JCheckBox> entry : _checkboxes.entrySet())
     {
-      JCheckBox checkbox=_checkboxes.get(code);
+      Integer code=entry.getKey();
       _selectedCodes.add(code);
+      JCheckBox checkbox=entry.getValue();
       checkbox.setSelected(true);
     }
     if (_listener!=null)
@@ -133,10 +135,11 @@ public class CategoryChooserController
 
   private void deselectAll()
   {
-    for(Integer code : _checkboxes.keySet())
+    for(Map.Entry<Integer,JCheckBox> entry : _checkboxes.entrySet())
     {
-      JCheckBox checkbox=_checkboxes.get(code);
+      Integer code=entry.getKey();
       _selectedCodes.remove(code);
+      JCheckBox checkbox=entry.getValue();
       checkbox.setSelected(false);
     }
     if (_listener!=null)

@@ -1,6 +1,7 @@
 package delta.games.lotro.maps.data.basemaps;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -117,14 +118,15 @@ public class GeoreferencedBasemapsManager
 
   /**
    * Dump the contents of this manager.
+   * @param out Output stream.
    */
-  public void dump()
+  public void dump(PrintStream out)
   {
     List<GeoreferencedBasemap> maps=getBasemaps();
-    System.out.println("Basemaps: ("+maps.size()+")");
+    out.println("Basemaps: ("+maps.size()+")");
     for(GeoreferencedBasemap map : maps)
     {
-      System.out.println("* "+map);
+      out.println("* "+map);
     }
   }
 }

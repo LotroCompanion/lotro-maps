@@ -21,7 +21,7 @@ public class TooltipHelper
    */
   public static String buildTooltip(List<MapPoint> points)
   {
-    if (points.size()==0)
+    if (points.isEmpty())
     {
       return null;
     }

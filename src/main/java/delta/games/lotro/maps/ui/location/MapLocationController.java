@@ -55,7 +55,7 @@ public class MapLocationController
     @Override
     public void mouseMoved(MouseEvent event)
     {
-      if (_listeners.size()>0)
+      if (!_listeners.isEmpty())
       {
         GeoReference reference=_canvas.getViewReference();
         Dimension pixels=new Dimension(event.getX(),event.getY());

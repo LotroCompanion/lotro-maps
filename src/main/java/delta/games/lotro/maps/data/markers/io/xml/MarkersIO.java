@@ -28,7 +28,7 @@ public class MarkersIO
     {
       markers=parseMarkers(markersFile);
     }
-    if (markers==null)
+    else
     {
       markers=new ArrayList<Marker>();
     }

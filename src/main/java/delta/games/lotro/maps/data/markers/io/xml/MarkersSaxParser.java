@@ -44,6 +44,7 @@ public final class MarkersSaxParser extends DefaultHandler
 
       // Use the default (non-validating) parser
       SAXParserFactory factory=SAXParserFactory.newInstance();
+      factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       SAXParser saxParser=factory.newSAXParser();
       saxParser.parse(source,handler);
       saxParser.reset();
@@ -53,7 +54,7 @@ public final class MarkersSaxParser extends DefaultHandler
     {
       LOGGER.error("Error when loading markers file "+source,e);
     }
-    return null;
+    return new ArrayList<Marker>();
   }
 
   @Override

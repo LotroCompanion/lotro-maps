@@ -67,7 +67,7 @@ public class LinksLayer extends BaseVectorLayer
   @Override
   public void paintLayer(MapView view, Graphics g)
   {
-    if (_links.size()>0)
+    if (!_links.isEmpty())
     {
       for(MapLink link : _links)
       {

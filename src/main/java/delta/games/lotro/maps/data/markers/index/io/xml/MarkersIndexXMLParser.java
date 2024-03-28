@@ -38,6 +38,7 @@ public class MarkersIndexXMLParser extends DefaultHandler
     {
       // Use the default (non-validating) parser
       SAXParserFactory factory = SAXParserFactory.newInstance();
+      factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       SAXParser saxParser = factory.newSAXParser();
       saxParser.parse(source, this);
       saxParser.reset();

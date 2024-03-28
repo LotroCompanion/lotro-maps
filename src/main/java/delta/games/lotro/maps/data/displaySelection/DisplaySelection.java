@@ -46,7 +46,6 @@ public class DisplaySelection
   {
     List<DisplaySelectionItem> ret=new ArrayList<DisplaySelectionItem>();
     ret.addAll(_items.values());
-    // TODO Sort
     return ret;
   }
 

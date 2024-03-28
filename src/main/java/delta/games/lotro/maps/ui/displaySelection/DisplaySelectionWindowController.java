@@ -68,7 +68,7 @@ public class DisplaySelectionWindowController extends DefaultWindowController im
     _filter=new DisplaySelectionFilter(_displaySelection);
     _itemsFilter=new DisplaySelectionItemsFilter(markersFilter);
     _tableController=new DisplaySelectionTableController(_displaySelection,categoriesMgr,_itemsFilter,_filter,this);
-    _panelController=new DisplaySelectionPanelController(this,_tableController);
+    _panelController=new DisplaySelectionPanelController(_tableController);
     _filterController=new DisplaySelectionFilterController(categoriesMgr,_itemsFilter,_panelController);
     _visibilityController=new DisplaySelectionVisibilityEditionPanelController(_tableController,_displaySelection,_itemsFilter,this);
   }

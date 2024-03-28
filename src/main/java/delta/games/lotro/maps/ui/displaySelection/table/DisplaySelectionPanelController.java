@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
-import delta.common.ui.swing.windows.WindowController;
 import delta.common.ui.swing.windows.WindowsManager;
 
 /**
@@ -30,17 +29,13 @@ public class DisplaySelectionPanelController implements FilterUpdateListener
   private JPanel _panel;
   private JLabel _statsLabel;
   private WindowsManager _windowsManager;
-  // Controllers
-  private WindowController _parent;
 
   /**
    * Constructor.
-   * @param parent Parent window.
    * @param tableController Associated table controller.
    */
-  public DisplaySelectionPanelController(WindowController parent, DisplaySelectionTableController tableController)
+  public DisplaySelectionPanelController(DisplaySelectionTableController tableController)
   {
-    _parent=parent;
     _tableController=tableController;
     _windowsManager=new WindowsManager();
     getPanel();
@@ -86,6 +81,9 @@ public class DisplaySelectionPanelController implements FilterUpdateListener
     updateStatsLabel();
   }
 
+  /**
+   * Update the stats label.
+   */
   public void updateStatsLabel()
   {
     LOGGER.debug("Update stats");
@@ -122,7 +120,5 @@ public class DisplaySelectionPanelController implements FilterUpdateListener
       _windowsManager.disposeAll();
       _windowsManager=null;
     }
-    // Controllers
-    _parent=null;
   }
 }

@@ -98,7 +98,7 @@ public class MarkersLayer extends BaseVectorLayer
 
   private void paintMarkers(MapView view, List<Marker> markers, Graphics g)
   {
-    if ((markers==null) || (markers.size()==0))
+    if ((markers==null) || (markers.isEmpty()))
     {
       return;
     }

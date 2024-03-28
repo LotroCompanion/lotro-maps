@@ -69,10 +69,7 @@ public class MapFilterPanelController extends AbstractPanelController
     _filter.getCategoryFilter().setCategories(codes);
   }
 
-  /**
-   * Get the managed panel.
-   * @return the managed panel.
-   */
+  @Override
   public JPanel getPanel()
   {
     JPanel panel=super.getPanel();
@@ -164,9 +161,7 @@ public class MapFilterPanelController extends AbstractPanelController
     _listener.filterUpdated();
   }
 
-  /**
-   * Release all managed resources.
-   */
+  @Override
   public void dispose()
   {
     super.dispose();
