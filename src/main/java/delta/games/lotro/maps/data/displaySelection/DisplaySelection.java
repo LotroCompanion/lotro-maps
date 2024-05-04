@@ -60,11 +60,12 @@ public class DisplaySelection
     // - sort markers
     Map<Integer,List<Marker>> sortedMarkers=sortMarkers(markers);
     Set<Integer> idsToRemove=new HashSet<Integer>(_items.keySet());
-    for(Integer key : sortedMarkers.keySet())
+    for(Map.Entry<Integer,List<Marker>> entry : sortedMarkers.entrySet())
     {
       // Remove the current key for the IDs to remove
+      Integer key=entry.getKey();
       idsToRemove.remove(key);
-      List<Marker> markersForID=sortedMarkers.get(key);
+      List<Marker> markersForID=entry.getValue();
       DisplaySelectionItem selectionItem=_items.get(key);
       if (selectionItem==null)
       {
