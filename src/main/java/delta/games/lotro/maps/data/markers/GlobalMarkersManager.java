@@ -2,9 +2,8 @@ package delta.games.lotro.maps.data.markers;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.WeakHashMap;
 
 import delta.games.lotro.maps.data.Marker;
 
@@ -14,7 +13,7 @@ import delta.games.lotro.maps.data.Marker;
  */
 public class GlobalMarkersManager
 {
-  private Map<String,BlockMarkersManager> _cache;
+  private WeakHashMap<String,BlockMarkersManager> _cache;
   private File _rootDir;
   private static final int BLOCK_SIZE=16;
 
@@ -25,7 +24,7 @@ public class GlobalMarkersManager
   public GlobalMarkersManager(File rootDir)
   {
     _rootDir=rootDir;
-    _cache=new HashMap<String,BlockMarkersManager>();
+    _cache=new WeakHashMap<String,BlockMarkersManager>();
   }
 
   /**
