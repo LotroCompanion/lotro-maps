@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.labels.LabelWithHalo;
+import delta.common.ui.swing.panels.AbstractPanelController;
 import delta.games.lotro.maps.ui.controllers.SelectionController;
 import delta.games.lotro.maps.ui.layers.Layer;
 import delta.games.lotro.maps.ui.layers.MarkersLayer;
@@ -42,7 +43,7 @@ import delta.games.lotro.maps.ui.selection.SelectionManager;
  * </ul>
  * @author DAM
  */
-public class MapPanelController
+public class MapPanelController extends AbstractPanelController
 {
   // Data
   private MapCanvas _canvas;
@@ -55,6 +56,8 @@ public class MapPanelController
   private JLayeredPane _layers;
   private JPanel _labeled;
   private List<JButton> _buttons; 
+  private MouseAdapter _zoomListener;
+  private MouseAdapter _panListener;
 
   /**
    * Constructor.
@@ -88,6 +91,7 @@ public class MapPanelController
     _buttons=new ArrayList<JButton>();
     // Layers manager
     addLayersButton();
+    setPanel(_canvas);
   }
 
   /**
@@ -129,6 +133,7 @@ public class MapPanelController
       }
     };
     _canvas.addMouseWheelListener(adapter);
+    _zoomListener=adapter;
   }
 
   private void initPanController()
@@ -176,6 +181,7 @@ public class MapPanelController
     };
     _canvas.addMouseListener(adapter);
     _canvas.addMouseMotionListener(adapter);
+    _panListener=adapter;
   }
 
   private void initSelectionController()
@@ -283,14 +289,24 @@ public class MapPanelController
     _canvas.repaint();
   }
 
-  /**
-   * Release all managed resources.
-   */
+  @Override
   public void dispose()
   {
+    super.dispose();
     // Data
     if (_canvas!=null)
     {
+      if (_zoomListener!=null)
+      {
+        _canvas.removeMouseWheelListener(_zoomListener);
+        _zoomListener=null;
+      }
+      if (_panListener!=null)
+      {
+        _canvas.removeMouseMotionListener(_panListener);
+        _canvas.removeMouseListener(_panListener);
+        _panListener=null;
+      }
       _canvas.dispose();
       _canvas=null;
     }
