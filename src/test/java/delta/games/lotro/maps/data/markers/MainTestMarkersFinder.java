@@ -12,25 +12,37 @@ import delta.games.lotro.maps.data.Marker;
  */
 public class MainTestMarkersFinder
 {
-  /**
-   * Main method for this test.
-   * @param args Not used.
-   */
-  public static void main(String[] args)
+  private void doIt(MapsManager mapsManager, int zoneId, int contentLayer)
   {
-    File rootDir=new File("../lotro-maps-db");
-    MapsManager mapsManager=new MapsManager(rootDir);
     MarkersFinder finder=mapsManager.getMarkersFinder();
-    //int zoneId=1879232928; // Stangard
-    //int contentLayer=0;
-    int zoneId=1879198510; // The Twenty-first Hall
-    int contentLayer=268435638;
-
     List<Marker> markers=finder.findMarkers(zoneId,contentLayer);
     System.out.println("Found "+markers.size()+" markers");
     for(Marker marker : markers)
     {
       System.out.println(marker);
     }
+  }
+
+  private void doIt()
+  {
+    File rootDir=new File("../lotro-maps-db");
+    MapsManager mapsManager=new MapsManager(rootDir);
+    // Stangard
+    int zoneId=1879232928; 
+    int contentLayer=0;
+    doIt(mapsManager,zoneId,contentLayer);
+    // The Twenty-first Hall
+    zoneId=1879198510; // 
+    contentLayer=268435638;
+    doIt(mapsManager,zoneId,contentLayer);
+  }
+
+  /**
+   * Main method for this test.
+   * @param args Not used.
+   */
+  public static void main(String[] args)
+  {
+    new MainTestMarkersFinder().doIt();
   }
 }

@@ -44,6 +44,7 @@ public class MainTestCustomMarkersLayer
   private static Marker buildMarker(int id, double lon, double lat)
   {
     Marker marker=new Marker();
+    marker.setId(id);
     GeoPoint position=new GeoPoint((float)lon,(float)lat);
     marker.setPosition(position);
     return marker;

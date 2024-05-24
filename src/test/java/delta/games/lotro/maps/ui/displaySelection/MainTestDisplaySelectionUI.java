@@ -22,21 +22,20 @@ public class MainTestDisplaySelectionUI
     File rootDir=new File("../lotro-maps-db");
     MapsManager mapsManager=new MapsManager(rootDir);
     MarkersFinder finder=mapsManager.getMarkersFinder();
-    //int dungeonID=1879048295; // Thorin' Hall
-    //int dungeonID=1879418771; 
-    //List<Marker> markers=finder.findMarkers(dungeonID,0);
 
     int[] ids=new int[] {
+        1879048295, // Thorin's Hall
+        1879418771, // Howlers' Notch
         1879063921, // Vale of Thrain
         1879063922, // Low Lands
         1879063923, // Haudh Lin
         1879063924, // Falathlorn
-        1879063925, // Sarn�r
+        1879063925, // Sarnúr
         1879063926, // Rath Teraig
         1879063928, // Falathlorn
         1879063929, // Celondim
         1879063930, // Limael's Vineyard
-        1879063931, // Kheled�l
+        1879063931, // Kheledûl
         1879206150, // Low Lands
     };
     List<Marker> markers=new ArrayList<Marker>();
