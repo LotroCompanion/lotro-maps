@@ -7,6 +7,7 @@ import java.util.List;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
+import delta.common.utils.i18n.SingleLocaleLabelsManager;
 import delta.common.utils.xml.DOMParsingTools;
 import delta.games.lotro.maps.data.GeoBox;
 import delta.games.lotro.maps.data.GeoPoint;
@@ -20,12 +21,23 @@ import delta.games.lotro.maps.data.markers.io.xml.MarkersXMLParser;
  */
 public class GeoreferencedBasemapXMLParser
 {
+  private SingleLocaleLabelsManager _i18n;
+
+  /**
+   * Constructor.
+   * @param i18n I18n.
+   */
+  public GeoreferencedBasemapXMLParser(SingleLocaleLabelsManager i18n)
+  {
+    _i18n=i18n;
+  }
+
   /**
    * Parse the XML file.
    * @param source Source file.
    * @return Parsed data or <code>null</code>.
    */
-  public static List<GeoreferencedBasemap> parseXML(File source)
+  public List<GeoreferencedBasemap> parseXML(File source)
   {
     List<GeoreferencedBasemap> ret=new ArrayList<GeoreferencedBasemap>();
     Element root=DOMParsingTools.parse(source);
@@ -46,13 +58,17 @@ public class GeoreferencedBasemapXMLParser
    * @param root Root element.
    * @return A georeferenced basemap.
    */
-  private static GeoreferencedBasemap parseMap(Element root)
+  private GeoreferencedBasemap parseMap(Element root)
   {
     NamedNodeMap attrs=root.getAttributes();
     // Identifier
     int id=DOMParsingTools.getIntAttribute(attrs,GeoreferencedBasemapsXMLConstants.MAP_ID_ATTR,0);
     // Name
-    String name=DOMParsingTools.getStringAttribute(attrs,GeoreferencedBasemapsXMLConstants.MAP_NAME_ATTR,"");
+    String name=_i18n.getLabel(String.valueOf(id));
+    if (name==null)
+    {
+      name=DOMParsingTools.getStringAttribute(attrs,GeoreferencedBasemapsXMLConstants.MAP_NAME_ATTR,"");
+    }
     // Image ID
     int imageId=DOMParsingTools.getIntAttribute(attrs,GeoreferencedBasemapsXMLConstants.MAP_IMAGE_ID_ATTR,0);
     // Geographic reference

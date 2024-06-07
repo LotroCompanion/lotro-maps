@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import delta.common.utils.i18n.SingleLocaleLabelsManager;
 import delta.common.utils.id.IdentifiableComparator;
 import delta.common.utils.text.EncodingNames;
 import delta.games.lotro.maps.data.basemaps.io.xml.GeoreferencedBasemapXMLParser;
@@ -30,15 +31,18 @@ public class GeoreferencedBasemapsManager
   {
     _rootDir=rootDir;
     _maps=new HashMap<Integer,GeoreferencedBasemap>();
-    load();
   }
 
-  private void load()
+  /**
+   * Load basemaps using the given labels.
+   * @param labelsMgr Labels manager.
+   */
+  public void load(SingleLocaleLabelsManager labelsMgr)
   {
     File from=getMapsFile();
     if (from.exists())
     {
-      List<GeoreferencedBasemap> basemaps=GeoreferencedBasemapXMLParser.parseXML(from);
+      List<GeoreferencedBasemap> basemaps=new GeoreferencedBasemapXMLParser(labelsMgr).parseXML(from);
       for(GeoreferencedBasemap basemap : basemaps)
       {
         addBasemap(basemap);

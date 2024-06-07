@@ -2,11 +2,13 @@ package delta.games.lotro.maps.data;
 
 import java.io.File;
 
+import delta.common.utils.i18n.SingleLocaleLabelsManager;
 import delta.games.lotro.maps.data.basemaps.GeoreferencedBasemapsManager;
 import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.links.LinksManager;
 import delta.games.lotro.maps.data.markers.GlobalMarkersManager;
 import delta.games.lotro.maps.data.markers.MarkersFinder;
+import delta.games.lotro.maps.utils.i18n.I18nFacade;
 
 /**
  * Maps manager.
@@ -15,6 +17,8 @@ import delta.games.lotro.maps.data.markers.MarkersFinder;
 public class MapsManager
 {
   private File _rootDir;
+  // I18n
+  private I18nFacade _i18n;
   // Basemaps
   private GeoreferencedBasemapsManager _basemapsManager;
   // Categories
@@ -31,10 +35,34 @@ public class MapsManager
    */
   public MapsManager(File rootDir)
   {
+    this(rootDir,"en");
+  }
+
+  /**
+   * Get the labels directory.
+   * @return the labels directory.
+   */
+  public File getLabelsDir()
+  {
+    return new File(_rootDir,"labels");
+  }
+
+  /**
+   * Constructor.
+   * @param rootDir Root directory for maps data.
+   * @param localeKey Locale key.
+   */
+  public MapsManager(File rootDir, String localeKey)
+  {
     _rootDir=rootDir;
+    // I18n
+    File labelsDir=getLabelsDir();
+    _i18n=new I18nFacade(labelsDir,localeKey);
     // Basemaps
     File mapsDir=new File(_rootDir,"maps");
     _basemapsManager=new GeoreferencedBasemapsManager(mapsDir);
+    SingleLocaleLabelsManager labelsMgr=_i18n.getLabelsMgr("basemaps");
+    _basemapsManager.load(labelsMgr);
     // Categories
     File categoriesDir=new File(_rootDir,"categories");
     _categoriesManager=new CategoriesManager(categoriesDir);
