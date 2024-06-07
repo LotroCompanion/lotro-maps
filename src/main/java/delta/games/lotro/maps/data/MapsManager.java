@@ -61,14 +61,15 @@ public class MapsManager
     // Basemaps
     File mapsDir=new File(_rootDir,"maps");
     _basemapsManager=new GeoreferencedBasemapsManager(mapsDir);
-    SingleLocaleLabelsManager labelsMgr=_i18n.getLabelsMgr("basemaps");
-    _basemapsManager.load(labelsMgr);
+    SingleLocaleLabelsManager baseMapsLabelsMgr=_i18n.getLabelsMgr("basemaps");
+    _basemapsManager.load(baseMapsLabelsMgr);
     // Categories
     File categoriesDir=new File(_rootDir,"categories");
     _categoriesManager=new CategoriesManager(categoriesDir);
     // Markers
     File markersDir=new File(_rootDir,"markers");
-    _markersManager=new GlobalMarkersManager(markersDir);
+    SingleLocaleLabelsManager markersLabelsMgr=_i18n.getLabelsMgr("markers");
+    _markersManager=new GlobalMarkersManager(markersDir,markersLabelsMgr);
     _markersFinder=new MarkersFinder(_rootDir,_markersManager);
     // Links
     _linksManager=new LinksManager(rootDir);

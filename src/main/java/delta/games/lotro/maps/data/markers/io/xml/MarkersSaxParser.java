@@ -13,6 +13,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import delta.common.utils.NumericTools;
+import delta.common.utils.i18n.SingleLocaleLabelsManager;
+import delta.common.utils.xml.SAXParsingTools;
 import delta.games.lotro.maps.data.GeoPoint;
 import delta.games.lotro.maps.data.Marker;
 
@@ -24,10 +26,16 @@ public final class MarkersSaxParser extends DefaultHandler
 {
   private static final Logger LOGGER=Logger.getLogger(MarkersSaxParser.class);
 
+  private SingleLocaleLabelsManager _i18n;
   private List<Marker> _parsedMarkers;
 
-  private MarkersSaxParser()
+  /**
+   * Constructor.
+   * @param i18n Labels manager.
+   */
+  public MarkersSaxParser(SingleLocaleLabelsManager i18n)
   {
+    _i18n=i18n;
     _parsedMarkers=new ArrayList<Marker>();
   }
 
@@ -36,19 +44,17 @@ public final class MarkersSaxParser extends DefaultHandler
    * @param source Source file.
    * @return List of parsed items.
    */
-  public static List<Marker> parseMarkersFile(File source)
+  public List<Marker> parseMarkersFile(File source)
   {
     try
     {
-      MarkersSaxParser handler=new MarkersSaxParser();
-
       // Use the default (non-validating) parser
       SAXParserFactory factory=SAXParserFactory.newInstance();
       factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
       SAXParser saxParser=factory.newSAXParser();
-      saxParser.parse(source,handler);
+      saxParser.parse(source,this);
       saxParser.reset();
-      return handler._parsedMarkers;
+      return _parsedMarkers;
     }
     catch (Exception e)
     {
@@ -67,17 +73,21 @@ public final class MarkersSaxParser extends DefaultHandler
       String idStr=attributes.getValue(MarkersXMLConstants.ID_ATTR);
       int id=NumericTools.parseInt(idStr,0);
       marker.setId(id);
+      // DID
+      String didStr=attributes.getValue(MarkersXMLConstants.DID_ATTR);
+      int did=NumericTools.parseInt(didStr,0);
+      marker.setDid(did);
       // Label
-      String label=attributes.getValue(MarkersXMLConstants.LABEL_ATTR);
+      String label=_i18n.getLabel(String.valueOf(did));
+      if (label==null)
+      {
+        label=SAXParsingTools.getStringAttribute(attributes,MarkersXMLConstants.LABEL_ATTR,"");
+      }
       marker.setLabel(label);
       // Category code
       String categoryCodeStr=attributes.getValue(MarkersXMLConstants.CATEGORY_ATTR);
       int categoryCode=NumericTools.parseInt(categoryCodeStr,0);
       marker.setCategoryCode(categoryCode);
-      // DID
-      String didStr=attributes.getValue(MarkersXMLConstants.DID_ATTR);
-      int did=NumericTools.parseInt(didStr,0);
-      marker.setDid(did);
       // Parent zone ID
       String parentZoneIdStr=attributes.getValue(MarkersXMLConstants.PARENT_ZONE_ID_ATTR);
       int parentZoneId=NumericTools.parseInt(parentZoneIdStr,0);

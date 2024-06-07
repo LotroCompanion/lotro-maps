@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import delta.common.utils.i18n.SingleLocaleLabelsManager;
 import delta.games.lotro.maps.data.Marker;
 
 /**
@@ -19,28 +20,23 @@ public class MarkersIO
   /**
    * Load map markers from the given file.
    * @param markersFile Markers file.
+   * @param labelsMgr Labels manager.
    * @return A markers manager.
    */
-  public static List<Marker> loadMarkers(File markersFile)
+  public static List<Marker> loadMarkers(File markersFile, SingleLocaleLabelsManager labelsMgr)
   {
     List<Marker> markers=null;
     if (markersFile.exists())
     {
-      markers=parseMarkers(markersFile);
+      long now1=System.currentTimeMillis();
+      markers=new MarkersSaxParser(labelsMgr).parseMarkersFile(markersFile);
+      long now2=System.currentTimeMillis();
+      LOGGER.info("Loaded "+markers.size()+" markers from file "+markersFile.getName()+" in "+(now2-now1)+"ms");
     }
     else
     {
       markers=new ArrayList<Marker>();
     }
-    return markers;
-  }
-
-  private static List<Marker> parseMarkers(File markersFile)
-  {
-    long now1=System.currentTimeMillis();
-    List<Marker> markers=MarkersSaxParser.parseMarkersFile(markersFile);
-    long now2=System.currentTimeMillis();
-    LOGGER.info("Loaded "+markers.size()+" markers from file "+markersFile.getName()+" in "+(now2-now1)+"ms");
     return markers;
   }
 }

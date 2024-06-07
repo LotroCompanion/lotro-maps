@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import delta.common.utils.i18n.SingleLocaleLabelsManager;
 import delta.games.lotro.maps.data.Marker;
 import delta.games.lotro.maps.data.markers.comparators.MarkerIdentifierComparator;
 import delta.games.lotro.maps.data.markers.io.xml.MarkersIO;
@@ -131,14 +132,15 @@ public class BlockMarkersManager
 
   /**
    * Load from disk.
+   * @param labelsMgr Labels manager.
    */
-  public void load()
+  public void load(SingleLocaleLabelsManager labelsMgr)
   {
     LOGGER.debug("Loading markers from file: "+_markersFile);
     clear();
     if (_markersFile.exists())
     {
-      List<Marker> allMarkers=MarkersIO.loadMarkers(_markersFile);
+      List<Marker> allMarkers=MarkersIO.loadMarkers(_markersFile,labelsMgr);
       for(Marker marker : allMarkers)
       {
         registerMarker(marker);

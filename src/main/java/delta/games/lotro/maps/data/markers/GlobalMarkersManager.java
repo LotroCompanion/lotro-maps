@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.WeakHashMap;
 
+import delta.common.utils.i18n.SingleLocaleLabelsManager;
 import delta.games.lotro.maps.data.Marker;
 
 /**
@@ -13,18 +14,22 @@ import delta.games.lotro.maps.data.Marker;
  */
 public class GlobalMarkersManager
 {
+  private static final int BLOCK_SIZE=16;
+
   private WeakHashMap<String,BlockMarkersManager> _cache;
   private File _rootDir;
-  private static final int BLOCK_SIZE=16;
+  private SingleLocaleLabelsManager _labelsMgr;
 
   /**
    * Constructor.
    * @param rootDir Root directory.
+   * @param labelsMgr Labels manager.
    */
-  public GlobalMarkersManager(File rootDir)
+  public GlobalMarkersManager(File rootDir, SingleLocaleLabelsManager labelsMgr)
   {
     _rootDir=rootDir;
     _cache=new WeakHashMap<String,BlockMarkersManager>();
+    _labelsMgr=labelsMgr;
   }
 
   /**
@@ -70,7 +75,7 @@ public class GlobalMarkersManager
       File blockFile=getBlockFile(region,bigXBlock,bigYBlock);
       int firstId=getFirstId(region,bigXBlock,bigYBlock);
       blockManager=new BlockMarkersManager(blockFile,firstId);
-      blockManager.load();
+      blockManager.load(_labelsMgr);
       _cache.put(key,blockManager);
     }
     return blockManager;
