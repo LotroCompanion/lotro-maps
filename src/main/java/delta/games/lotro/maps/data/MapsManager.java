@@ -39,12 +39,13 @@ public class MapsManager
   }
 
   /**
-   * Get the labels directory.
-   * @return the labels directory.
+   * Constructor.
+   * @param rootDir Root directory for maps data.
+   * @param weak Use weak map for markers managers (default) or not.
    */
-  public File getLabelsDir()
+  public MapsManager(File rootDir, boolean weak)
   {
-    return new File(_rootDir,"labels");
+    this(rootDir,"en",weak);
   }
 
   /**
@@ -53,6 +54,17 @@ public class MapsManager
    * @param localeKey Locale key.
    */
   public MapsManager(File rootDir, String localeKey)
+  {
+    this(rootDir,localeKey,true);
+  }
+
+  /**
+   * Constructor.
+   * @param rootDir Root directory for maps data.
+   * @param localeKey Locale key.
+   * @param weak Use weak map for markers managers (default) or not.
+   */
+  public MapsManager(File rootDir, String localeKey, boolean weak)
   {
     _rootDir=rootDir;
     // I18n
@@ -69,10 +81,19 @@ public class MapsManager
     // Markers
     File markersDir=new File(_rootDir,"markers");
     SingleLocaleLabelsManager markersLabelsMgr=_i18n.getLabelsMgr("markers");
-    _markersManager=new GlobalMarkersManager(markersDir,markersLabelsMgr);
+    _markersManager=new GlobalMarkersManager(markersDir,markersLabelsMgr,weak);
     _markersFinder=new MarkersFinder(_rootDir,_markersManager);
     // Links
     _linksManager=new LinksManager(rootDir);
+  }
+
+  /**
+   * Get the labels directory.
+   * @return the labels directory.
+   */
+  public File getLabelsDir()
+  {
+    return new File(_rootDir,"labels");
   }
 
   /**
