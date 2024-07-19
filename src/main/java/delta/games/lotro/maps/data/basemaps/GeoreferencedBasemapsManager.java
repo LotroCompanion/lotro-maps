@@ -100,17 +100,6 @@ public class GeoreferencedBasemapsManager
   }
 
   /**
-   * Get all basemaps, sorted by name.
-   * @return A list of basemaps.
-   */
-  public List<GeoreferencedBasemap> getMapsByName()
-  {
-    List<GeoreferencedBasemap> maps=new ArrayList<GeoreferencedBasemap>(_maps.values());
-    Collections.sort(maps,new GeoreferencedBasemapNameComparator());
-    return maps;
-  }
-
-  /**
    * Get the file for the image of a basemap.
    * @param basemapId Basemap identifier.
    * @return An image file.
