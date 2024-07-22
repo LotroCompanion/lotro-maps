@@ -1,10 +1,14 @@
 package delta.games.lotro.maps.ui.location;
 
 import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 import delta.games.lotro.maps.data.GeoPoint;
 import delta.games.lotro.maps.data.GeoReference;
@@ -57,14 +61,29 @@ public class MapLocationController
     {
       if (!_listeners.isEmpty())
       {
-        GeoReference reference=_canvas.getViewReference();
-        Dimension pixels=new Dimension(event.getX(),event.getY());
-        GeoPoint location=reference.pixel2geo(pixels);
-        for(MapLocationListener listener : _listeners)
-        {
-          listener.mapLocationUpdated(location);
-        }
+        update(event.getX(),event.getY());
       }
+    }
+  }
+
+  /**
+   * Update location from current mouse position.
+   */
+  public void updateLocation()
+  {
+    Point p=MouseInfo.getPointerInfo().getLocation();
+    SwingUtilities.convertPointFromScreen(p,_canvas);
+    update(p.x,p.y);
+  }
+
+  private void update(int x, int y)
+  {
+    GeoReference reference=_canvas.getViewReference();
+    Dimension pixels=new Dimension(x,y);
+    GeoPoint location=reference.pixel2geo(pixels);
+    for(MapLocationListener listener : _listeners)
+    {
+      listener.mapLocationUpdated(location);
     }
   }
 

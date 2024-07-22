@@ -30,7 +30,6 @@ public class MapLocationPanelController implements MapLocationListener
   public MapLocationPanelController()
   {
     _panel=new LocationDisplayPanel();
-    mapLocationUpdated(new GeoPoint(0,0));
   }
 
   /**
@@ -42,6 +41,7 @@ public class MapLocationPanelController implements MapLocationListener
     return _panel;
   }
 
+  @Override
   public void mapLocationUpdated(GeoPoint point)
   {
     String location=point.asString();

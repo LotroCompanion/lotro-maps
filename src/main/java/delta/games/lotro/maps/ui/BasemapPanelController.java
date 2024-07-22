@@ -126,6 +126,7 @@ public class BasemapPanelController
       MapCanvas canvas=_mapPanel.getCanvas();
       canvas.setViewReference(viewReference);
     }
+    _mapPanel.getLocationController().updateLocation();
   }
 
   /**

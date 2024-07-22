@@ -95,6 +95,24 @@ public class MapPanelController extends AbstractPanelController
   }
 
   /**
+   * Get the map location controller.
+   * @return  the map location controller.
+   */
+  public MapLocationController getLocationController()
+  {
+    return _locationController;
+  }
+
+  /**
+   * Set the visibility of the location display.
+   * @param show <code>true</code> to show it, <code>false</code> to hide it.
+   */
+  public void setLocationVisible(boolean show)
+  {
+    _locationDisplay.getPanel().setVisible(show);
+  }
+
+  /**
    * Add the layers button.
    */
   private void addLayersButton()
