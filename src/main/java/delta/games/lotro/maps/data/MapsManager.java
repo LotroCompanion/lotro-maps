@@ -8,6 +8,7 @@ import delta.games.lotro.maps.data.categories.CategoriesManager;
 import delta.games.lotro.maps.data.links.LinksManager;
 import delta.games.lotro.maps.data.markers.GlobalMarkersManager;
 import delta.games.lotro.maps.data.markers.MarkersFinder;
+import delta.games.lotro.maps.data.markers.index.MarkersIndexesManager;
 import delta.games.lotro.maps.utils.i18n.I18nFacade;
 
 /**
@@ -17,7 +18,12 @@ import delta.games.lotro.maps.utils.i18n.I18nFacade;
 public class MapsManager
 {
   private File _rootDir;
-  // I18n
+  private File _categoriesDir;
+  private File _indexesDir;
+  private File _mapsDirs;
+  private File _markersDir;
+  private File _linksFile;
+   // I18n
   private I18nFacade _i18n;
   // Basemaps
   private GeoreferencedBasemapsManager _basemapsManager;
@@ -71,20 +77,23 @@ public class MapsManager
     File labelsDir=getLabelsDir();
     _i18n=new I18nFacade(labelsDir,localeKey);
     // Basemaps
-    File mapsDir=new File(_rootDir,"maps");
-    _basemapsManager=new GeoreferencedBasemapsManager(mapsDir);
+    _mapsDirs=new File(_rootDir,"maps");
+    _basemapsManager=new GeoreferencedBasemapsManager(_mapsDirs);
     SingleLocaleLabelsManager baseMapsLabelsMgr=_i18n.getLabelsMgr("basemaps");
     _basemapsManager.load(baseMapsLabelsMgr);
     // Categories
-    File categoriesDir=new File(_rootDir,"categories");
-    _categoriesManager=new CategoriesManager(categoriesDir);
+    _categoriesDir=new File(_rootDir,"categories");
+    _categoriesManager=new CategoriesManager(_categoriesDir);
     // Markers
-    File markersDir=new File(_rootDir,"markers");
+    _markersDir=new File(_rootDir,"markers");
     SingleLocaleLabelsManager markersLabelsMgr=_i18n.getLabelsMgr("markers");
-    _markersManager=new GlobalMarkersManager(markersDir,markersLabelsMgr,weak);
-    _markersFinder=new MarkersFinder(_rootDir,_markersManager);
+    _markersManager=new GlobalMarkersManager(_markersDir,markersLabelsMgr,weak);
+    _indexesDir=new File(_rootDir,"indexes");
+    MarkersIndexesManager indexsMgr=new MarkersIndexesManager(_indexesDir);
+    _markersFinder=new MarkersFinder(indexsMgr,_markersManager);
     // Links
-    _linksManager=new LinksManager(rootDir);
+    _linksFile=new File(rootDir,"links.xml");
+    _linksManager=new LinksManager(_linksFile);
   }
 
   /**
@@ -94,6 +103,51 @@ public class MapsManager
   public File getRootDir()
   {
     return _rootDir;
+  }
+
+  /**
+   * Get the directory for categories.
+   * @return A directory.
+   */
+  public File getCategoriesDir()
+  {
+    return _categoriesDir;
+  }
+
+  /**
+   * Get the directory for indexes.
+   * @return A directory.
+   */
+  public File getIndexesDir()
+  {
+    return _indexesDir;
+  }
+
+  /**
+   * Get the directory for maps.
+   * @return A directory.
+   */
+  public File getMapsDir()
+  {
+    return _mapsDirs;
+  }
+
+  /**
+   * Get the directory for markers.
+   * @return A directory.
+   */
+  public File getMarkersDir()
+  {
+    return _markersDir;
+  }
+
+  /**
+   * Get the file for map links.
+   * @return A file.
+   */
+  public File getLinksFile()
+  {
+    return _linksFile;
   }
 
   /**

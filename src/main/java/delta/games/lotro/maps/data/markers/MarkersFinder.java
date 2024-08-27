@@ -1,6 +1,5 @@
 package delta.games.lotro.maps.data.markers;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +25,13 @@ public class MarkersFinder
 
   /**
    * Constructor.
-   * @param rootDir Root maps directory.
+   * @param indexsMgr Indexs manager.
    * @param markersMgr Markers manager.
    */
-  public MarkersFinder(File rootDir, GlobalMarkersManager markersMgr)
+  public MarkersFinder(MarkersIndexesManager indexsMgr, GlobalMarkersManager markersMgr)
   {
     _markersMgr=markersMgr;
-    _indexsMgr=new MarkersIndexesManager(rootDir);
+    _indexsMgr=indexsMgr;
   }
 
   /**

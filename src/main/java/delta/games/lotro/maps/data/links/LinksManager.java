@@ -13,16 +13,16 @@ import delta.games.lotro.maps.data.links.io.xml.LinksXMLWriter;
  */
 public class LinksManager
 {
-  private File _rootDir;
+  private File _linksFile;
   private List<MapLink> _links;
 
   /**
    * Constructor.
-   * @param rootDir Root directory.
+   * @param linksFile Links file.
    */
-  public LinksManager(File rootDir)
+  public LinksManager(File linksFile)
   {
-    _rootDir=rootDir;
+    _linksFile=linksFile;
     _links=new ArrayList<MapLink>();
     load();
   }
@@ -67,10 +67,9 @@ public class LinksManager
   private void load()
   {
     _links.clear();
-    File fromFile=getLinksFile();
-    if (fromFile.exists())
+    if (_linksFile.exists())
     {
-      _links.addAll(LinksXMLParser.loadLinks(fromFile));
+      _links.addAll(LinksXMLParser.loadLinks(_linksFile));
     }
   }
 
@@ -79,12 +78,6 @@ public class LinksManager
    */
   public void write()
   {
-    File toFile=getLinksFile();
-    LinksXMLWriter.writeLinksFile(toFile,_links);
-  }
-
-  private File getLinksFile()
-  {
-    return new File(_rootDir,"links.xml");
+    LinksXMLWriter.writeLinksFile(_linksFile,_links);
   }
 }

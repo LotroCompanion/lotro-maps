@@ -15,17 +15,17 @@ import delta.games.lotro.maps.data.markers.index.io.xml.MarkersIndexXMLWriter;
  */
 public class MarkersIndexesManager
 {
-  private File _rootDir;
+  private File _indexesDir;
   private Map<Integer,MarkersIndex> _didIndexes;
   private Map<Integer,MarkersIndex> _contentLayerIndexes;
 
   /**
    * Constructor.
-   * @param rootDir Root directory.
+   * @param indexesDir Root directory for indexes.
    */
-  public MarkersIndexesManager(File rootDir)
+  public MarkersIndexesManager(File indexesDir)
   {
-    _rootDir=rootDir;
+    _indexesDir=indexesDir;
     _didIndexes=new HashMap<Integer,MarkersIndex>();
     _contentLayerIndexes=new HashMap<Integer,MarkersIndex>();
   }
@@ -131,15 +131,13 @@ public class MarkersIndexesManager
 
   private File getFileForDidIndex(int did)
   {
-    File indexsDir=new File(_rootDir,"indexes");
-    File didIndexsDir=new File(indexsDir,"did");
+    File didIndexsDir=new File(_indexesDir,"did");
     return new File(didIndexsDir,did+".xml");
   }
 
  private File getFileForContentLayerIndex(int contentLayerId)
  {
-   File indexsDir=new File(_rootDir,"indexes");
-   File layerIndexsDir=new File(indexsDir,"layers");
+   File layerIndexsDir=new File(_indexesDir,"layers");
    return new File(layerIndexsDir,contentLayerId+".xml");
  }
 }
