@@ -88,6 +88,15 @@ public class MapsManager
   }
 
   /**
+   * Get the root directory.
+   * @return the root directory.
+   */
+  public File getRootDir()
+  {
+    return _rootDir;
+  }
+
+  /**
    * Get the labels directory.
    * @return the labels directory.
    */
