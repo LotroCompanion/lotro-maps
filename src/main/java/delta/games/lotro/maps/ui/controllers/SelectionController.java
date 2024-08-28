@@ -59,11 +59,11 @@ public class SelectionController implements MouseInputController
   public void handleMouseClicked(MouseEvent event)
   {
     int button=event.getButton();
-    int modifiers=event.getModifiers();
+    int modifiers=event.getModifiersEx();
     int x=event.getX();
     int y=event.getY();
 
-    if ((button==MouseEvent.BUTTON1) && ((modifiers&InputEvent.SHIFT_MASK)==0))
+    if ((button==MouseEvent.BUTTON1) && ((modifiers&InputEvent.SHIFT_DOWN_MASK)==0))
     {
       handleLeftClick(x,y);
     }
