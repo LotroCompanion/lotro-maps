@@ -9,7 +9,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.games.lotro.maps.data.GeoBox;
 import delta.games.lotro.maps.data.GeoPoint;
@@ -36,7 +37,7 @@ import delta.games.lotro.maps.ui.layers.VectorLayer;
  */
 public class MapCanvas extends JPanel implements MapView
 {
-  private static final Logger LOGGER=Logger.getLogger(MapCanvas.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(MapCanvas.class);
   /**
    * Sensibility of tooltips (pixels).
    */

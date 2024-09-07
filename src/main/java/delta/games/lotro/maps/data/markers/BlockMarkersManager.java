@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.common.utils.i18n.SingleLocaleLabelsManager;
 import delta.games.lotro.maps.data.Marker;
@@ -22,7 +23,7 @@ import delta.games.lotro.maps.data.markers.io.xml.MarkersXMLWriter;
  */
 public class BlockMarkersManager
 {
-  private static final Logger LOGGER=Logger.getLogger(BlockMarkersManager.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(BlockMarkersManager.class);
 
   private Map<Integer,LandblockMarkersManager> _markers;
   private File _markersFile;

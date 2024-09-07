@@ -6,7 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.games.lotro.maps.data.GeoBox;
 import delta.games.lotro.maps.data.GeoPoint;
@@ -22,7 +23,7 @@ import delta.games.lotro.maps.ui.layers.basemap.DefaultBasemapImageProvider;
  */
 public class BasemapLayer extends BaseRasterLayer 
 {
-  private static final Logger LOGGER=Logger.getLogger(BasemapLayer.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(BasemapLayer.class);
 
   private GeoreferencedBasemap _currentMap;
   private BasemapImageProvider _imageProvider;

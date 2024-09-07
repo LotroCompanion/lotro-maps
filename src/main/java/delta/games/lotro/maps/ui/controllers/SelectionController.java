@@ -12,7 +12,8 @@ import java.util.List;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.games.lotro.maps.data.GeoReference;
 import delta.games.lotro.maps.data.MapPoint;
@@ -35,7 +36,7 @@ import delta.games.lotro.maps.ui.layers.VectorLayer;
  */
 public class SelectionController implements MouseInputController
 {
-  private static final Logger LOGGER=Logger.getLogger(SelectionController.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(SelectionController.class);
   /**
    * Sensibility of link hot points.
    */

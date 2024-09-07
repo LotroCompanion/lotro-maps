@@ -3,7 +3,8 @@ package delta.games.lotro.maps.data.markers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.common.utils.collections.ThriftyIntSet;
 import delta.games.lotro.maps.data.Marker;
@@ -16,7 +17,7 @@ import delta.games.lotro.maps.data.markers.index.MarkersIndexesManager;
  */
 public class MarkersFinder
 {
-  private static final Logger LOGGER=Logger.getLogger(MarkersFinder.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(MarkersFinder.class);
 
   private static final String FOUND="Found ";
 
@@ -89,7 +90,7 @@ public class MarkersFinder
       LOGGER.debug(FOUND+ret.size()+" markers for zoneID="+zoneId+" and DID="+did);
       for(Marker marker : ret)
       {
-        LOGGER.debug(marker);
+        LOGGER.debug("{}",marker);
       }
     }
     return ret;
@@ -115,7 +116,7 @@ public class MarkersFinder
       LOGGER.debug(FOUND+ret.size()+" markers for zoneID="+zoneId+" and contentLayer="+contentLayer);
       for(Marker marker : ret)
       {
-        LOGGER.debug(marker);
+        LOGGER.debug("{}",marker);
       }
     }
     return ret;
@@ -136,7 +137,7 @@ public class MarkersFinder
       LOGGER.debug(FOUND+ret.size()+" markers for contentLayer="+contentLayer);
       for(Marker marker : ret)
       {
-        LOGGER.debug(marker);
+        LOGGER.debug("{}",marker);
       }
     }
     return ret;

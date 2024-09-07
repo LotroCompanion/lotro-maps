@@ -10,7 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.windows.DefaultWindowController;
@@ -32,7 +33,7 @@ import delta.games.lotro.maps.ui.displaySelection.visibility.DisplaySelectionVis
  */
 public class DisplaySelectionWindowController extends DefaultWindowController implements DisplaySelectionUpdateListener
 {
-  private static final Logger LOGGER=Logger.getLogger(DisplaySelectionWindowController.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(DisplaySelectionWindowController.class);
 
   /**
    * Identifier for this window.

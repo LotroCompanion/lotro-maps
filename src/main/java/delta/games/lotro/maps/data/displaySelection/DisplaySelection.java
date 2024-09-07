@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.games.lotro.maps.data.Marker;
 
@@ -17,7 +18,7 @@ import delta.games.lotro.maps.data.Marker;
  */
 public class DisplaySelection
 {
-  private static final Logger LOGGER=Logger.getLogger(DisplaySelection.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(DisplaySelection.class);
 
   private Map<Integer,DisplaySelectionItem> _items;
 

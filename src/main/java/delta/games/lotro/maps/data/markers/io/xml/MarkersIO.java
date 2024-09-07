@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.common.utils.i18n.SingleLocaleLabelsManager;
 import delta.games.lotro.maps.data.Marker;
@@ -15,7 +16,7 @@ import delta.games.lotro.maps.data.Marker;
  */
 public class MarkersIO
 {
-  private static final Logger LOGGER=Logger.getLogger(MarkersIO.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(MarkersIO.class);
 
   /**
    * Load map markers from the given file.

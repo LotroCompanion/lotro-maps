@@ -7,7 +7,8 @@ import java.util.List;
 
 import javax.swing.JButton;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.misc.Disposable;
@@ -29,7 +30,7 @@ import delta.games.lotro.maps.ui.displaySelection.DisplaySelectionWindowControll
  */
 public class MapFilteringController implements FilterUpdateListener,DisplaySelectionUpdateListener,Disposable
 {
-  private static final Logger LOGGER=Logger.getLogger(MapFilteringController.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(MapFilteringController.class);
 
   // Data
   private Filter<Marker> _filter;

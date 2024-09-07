@@ -7,7 +7,8 @@ import java.util.Set;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -21,7 +22,7 @@ import delta.games.lotro.maps.data.markers.index.MarkersIndex;
  */
 public class MarkersIndexXMLParser extends DefaultHandler
 {
-  private static final Logger LOGGER=Logger.getLogger(MarkersIndexXMLParser.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(MarkersIndexXMLParser.class);
 
   private Set<Integer> _ids;
 

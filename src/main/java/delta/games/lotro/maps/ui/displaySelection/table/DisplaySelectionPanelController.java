@@ -9,7 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.common.ui.swing.GuiFactory;
 import delta.common.ui.swing.tables.panel.FilterUpdateListener;
@@ -21,7 +22,7 @@ import delta.common.ui.swing.windows.WindowsManager;
  */
 public class DisplaySelectionPanelController implements FilterUpdateListener
 {
-  private static final Logger LOGGER=Logger.getLogger(DisplaySelectionPanelController.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(DisplaySelectionPanelController.class);
 
   // Data
   private DisplaySelectionTableController _tableController;

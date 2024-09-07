@@ -3,7 +3,8 @@ package delta.games.lotro.maps.ui.layers.basemap;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.common.ui.ImageUtils;
 import delta.games.lotro.maps.data.basemaps.GeoreferencedBasemap;
@@ -14,7 +15,7 @@ import delta.games.lotro.maps.data.basemaps.GeoreferencedBasemap;
  */
 public class DefaultBasemapImageProvider implements BasemapImageProvider
 {
-  private static final Logger LOGGER=Logger.getLogger(DefaultBasemapImageProvider.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(DefaultBasemapImageProvider.class);
 
   @Override
   public BufferedImage getImage(GeoreferencedBasemap basemap)

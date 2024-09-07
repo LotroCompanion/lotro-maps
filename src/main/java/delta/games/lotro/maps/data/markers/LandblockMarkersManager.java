@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import delta.games.lotro.maps.data.Marker;
 
@@ -15,7 +16,7 @@ import delta.games.lotro.maps.data.Marker;
  */
 public class LandblockMarkersManager
 {
-  private static final Logger LOGGER=Logger.getLogger(LandblockMarkersManager.class);
+  private static final Logger LOGGER=LoggerFactory.getLogger(LandblockMarkersManager.class);
   private Map<Integer,Marker> _markers;
   private int _firstId;
   private int _nextId;
