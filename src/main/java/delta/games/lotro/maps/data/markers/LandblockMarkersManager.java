@@ -75,7 +75,7 @@ public class LandblockMarkersManager
     _markers.put(key,marker);
     if (_markers.size()==256*16)
     {
-      LOGGER.warn("Markers block overwhelmed: "+this);
+      LOGGER.warn("Markers block overwhelmed: {}",this);
     }
   }
 

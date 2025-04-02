@@ -142,7 +142,7 @@ public class MarkersLayer extends BaseVectorLayer
     if (_useLabels)
     {
       String label=marker.getLabel();
-      if ((label!=null) && (label.length()>0))
+      if ((label!=null) && (!label.isEmpty()))
       {
         int index=label.indexOf('\n');
         if (index==-1)

@@ -19,8 +19,6 @@ public class MarkersFinder
 {
   private static final Logger LOGGER=LoggerFactory.getLogger(MarkersFinder.class);
 
-  private static final String FOUND="Found ";
-
   private GlobalMarkersManager _markersMgr;
   private MarkersIndexesManager _indexsMgr;
 
@@ -87,7 +85,7 @@ public class MarkersFinder
     List<Marker> ret=getMarkers(markersToGet);
     if (LOGGER.isDebugEnabled())
     {
-      LOGGER.debug(FOUND+ret.size()+" markers for zoneID="+zoneId+" and DID="+did);
+      LOGGER.debug("Found {} markers for zoneID={} and DID={}",Integer.valueOf(ret.size()),Integer.valueOf(zoneId),Integer.valueOf(did));
       for(Marker marker : ret)
       {
         LOGGER.debug("{}",marker);
@@ -113,7 +111,7 @@ public class MarkersFinder
     List<Marker> ret=getMarkers(markersToGet);
     if (LOGGER.isDebugEnabled())
     {
-      LOGGER.debug(FOUND+ret.size()+" markers for zoneID="+zoneId+" and contentLayer="+contentLayer);
+      LOGGER.debug("Found {} markers for zoneID={} and contentLayer={}",Integer.valueOf(ret.size()),Integer.valueOf(zoneId),Integer.valueOf(contentLayer));
       for(Marker marker : ret)
       {
         LOGGER.debug("{}",marker);
@@ -134,7 +132,7 @@ public class MarkersFinder
     List<Marker> ret=getMarkers(contentLayerMarkers);
     if (LOGGER.isDebugEnabled())
     {
-      LOGGER.debug(FOUND+ret.size()+" markers for contentLayer="+contentLayer);
+      LOGGER.debug("Found {} markers for contentLayer={}",Integer.valueOf(ret.size()),Integer.valueOf(contentLayer));
       for(Marker marker : ret)
       {
         LOGGER.debug("{}",marker);

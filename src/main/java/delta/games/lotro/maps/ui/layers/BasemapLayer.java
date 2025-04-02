@@ -52,7 +52,7 @@ public class BasemapLayer extends BaseRasterLayer
    */
   public void setMap(GeoreferencedBasemap basemap)
   {
-    LOGGER.debug("Set map: "+basemap);
+    LOGGER.debug("Set map: {}",basemap);
     _currentMap=basemap;
     _background=_imageProvider.getImage(basemap);
   }
@@ -63,7 +63,7 @@ public class BasemapLayer extends BaseRasterLayer
    */
   public void setBasemapImageProvider(BasemapImageProvider imageProvider)
   {
-    LOGGER.debug("Set image provider: "+imageProvider);
+    LOGGER.debug("Set image provider: {}",imageProvider);
     _imageProvider=imageProvider;
   }
 
@@ -115,11 +115,11 @@ public class BasemapLayer extends BaseRasterLayer
       int dy2=viewSize.height;
       GeoReference reference=_currentMap.getGeoReference();
       Dimension startPixels=reference.geo2pixel(viewReference.getStart());
-      LOGGER.debug("Start pixels: "+startPixels);
+      LOGGER.debug("Start pixels: {}",startPixels);
       GeoPoint endGeo=viewReference.pixel2geo(viewSize);
-      LOGGER.debug("End geo: "+endGeo);
+      LOGGER.debug("End geo: {}",endGeo);
       Dimension endPixels=reference.geo2pixel(endGeo);
-      LOGGER.debug("End pixels: "+endPixels);
+      LOGGER.debug("End pixels: {}",endPixels);
       int sx1=startPixels.width;
       int sy1=startPixels.height;
       int sx2=endPixels.width;

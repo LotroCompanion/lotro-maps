@@ -25,7 +25,7 @@ public class DefaultBasemapImageProvider implements BasemapImageProvider
     {
       return ImageUtils.loadImage(mapImageFile);
     }
-    LOGGER.warn("Cannot find file: "+mapImageFile);
+    LOGGER.warn("Cannot find file: {}",mapImageFile);
     return null;
   }
 }

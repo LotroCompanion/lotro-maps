@@ -32,7 +32,7 @@ public class MarkersIO
       long now1=System.currentTimeMillis();
       markers=new MarkersSaxParser(labelsMgr).parseMarkersFile(markersFile);
       long now2=System.currentTimeMillis();
-      LOGGER.info("Loaded "+markers.size()+" markers from file "+markersFile.getName()+" in "+(now2-now1)+"ms");
+      LOGGER.info("Loaded {} markers from file {} in {}ms",Integer.valueOf(markers.size()),markersFile.getName(),Long.valueOf(now2-now1));
     }
     else
     {

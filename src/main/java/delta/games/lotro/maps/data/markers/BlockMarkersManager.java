@@ -137,7 +137,7 @@ public class BlockMarkersManager
    */
   public void load(SingleLocaleLabelsManager labelsMgr)
   {
-    LOGGER.debug("Loading markers from file: "+_markersFile);
+    LOGGER.debug("Loading markers from file: {}",_markersFile);
     clear();
     if (_markersFile.exists())
     {
@@ -147,7 +147,7 @@ public class BlockMarkersManager
         registerMarker(marker);
       }
     }
-    LOGGER.debug("Loaded "+_markers.size()+" markers.");
+    LOGGER.debug("Loaded {} markers.",Integer.valueOf(_markers.size()));
   }
 
   /**

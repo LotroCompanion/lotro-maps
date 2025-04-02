@@ -181,7 +181,7 @@ public class SelectionController implements MouseInputController
 
   private void handleMapPointSelection(MapPoint point)
   {
-    LOGGER.debug("Selected map point: "+point);
+    LOGGER.debug("Selected map point: {}",point);
     if (_listener!=null)
     {
       _listener.handleSelection(point);

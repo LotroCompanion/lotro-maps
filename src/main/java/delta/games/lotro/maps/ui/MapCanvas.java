@@ -182,21 +182,21 @@ public class MapCanvas extends JPanel implements MapView
     }
     int width=getWidth();
     int height=getHeight();
-    LOGGER.debug("Zoom: "+factor);
+    LOGGER.debug("Zoom: {}",Float.valueOf(factor));
     Dimension centerPixels=new Dimension(width/2,height/2);
     GeoPoint centerGeo=_viewReference.pixel2geo(centerPixels);
-    LOGGER.debug("Center geo: "+centerGeo);
+    LOGGER.debug("Center geo: {}",centerGeo);
     Dimension endPixels=new Dimension(width,height);
     GeoPoint endGeo=_viewReference.pixel2geo(endPixels);
-    LOGGER.debug("End geo: "+endGeo);
+    LOGGER.debug("End geo: {}",endGeo);
     float deltaLon=endGeo.getLongitude()-_viewReference.getStart().getLongitude();
-    LOGGER.debug("Delta lon="+deltaLon);
+    LOGGER.debug("Delta lon={}",Float.valueOf(deltaLon));
     float newDeltaLon=deltaLon/factor;
-    LOGGER.debug("New delta lon="+newDeltaLon);
+    LOGGER.debug("New delta lon={}",Float.valueOf(newDeltaLon));
     float deltaLat=_viewReference.getStart().getLatitude()-endGeo.getLatitude();
-    LOGGER.debug("Delta lat="+deltaLat);
+    LOGGER.debug("Delta lat={}",Float.valueOf(deltaLat));
     float newDeltaLat=deltaLat/factor;
-    LOGGER.debug("New delta lat="+newDeltaLat);
+    LOGGER.debug("New delta lat={}",Float.valueOf(newDeltaLat));
     float latCenter=centerGeo.getLatitude();
     float lonCenter=centerGeo.getLongitude();
     GeoPoint newStart=new GeoPoint(lonCenter-newDeltaLon/2,latCenter+newDeltaLat/2);
@@ -204,9 +204,9 @@ public class MapCanvas extends JPanel implements MapView
     {
       newStart=_constraint.checkNewStart(newStart,newGeo2PixelFactor);
     }
-    LOGGER.debug("New start geo: "+newStart);
+    LOGGER.debug("New start geo: {}",newStart);
     _viewReference=new GeoReference(newStart,newGeo2PixelFactor);
-    LOGGER.debug("New view reference: "+_viewReference);
+    LOGGER.debug("New view reference: {}",_viewReference);
     repaint();
   }
 
@@ -234,7 +234,7 @@ public class MapCanvas extends JPanel implements MapView
       newStart=_constraint.checkNewStart(newStart,geo2pixel);
     }
     _viewReference=new GeoReference(newStart,geo2pixel);
-    LOGGER.debug("New view reference: "+_viewReference);
+    LOGGER.debug("New view reference: {}",_viewReference);
     repaint();
   }
 

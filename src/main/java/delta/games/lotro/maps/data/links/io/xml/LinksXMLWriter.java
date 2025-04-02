@@ -61,7 +61,7 @@ public class LinksXMLWriter
       linkAttrs.addAttribute("","",LinksXMLConstants.LINK_TARGET_ATTR,XmlWriter.CDATA,String.valueOf(target));
       // Label
       String label=link.getLabel();
-      if ((label!=null) && (label.length()>0))
+      if ((label!=null) && (!label.isEmpty()))
       {
         linkAttrs.addAttribute("","",LinksXMLConstants.LINK_LABEL_ATTR,XmlWriter.CDATA,label);
       }
