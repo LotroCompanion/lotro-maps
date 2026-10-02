@@ -121,6 +121,23 @@ public class MarkersFinder
   }
 
   /**
+   * Find the markers for the given DID.
+   * @param did Data identifier.
+   * @return A possibly empty but never <code>null</code> list of markers.
+   */
+  public List<Marker> findMarkers(int did)
+  {
+    MarkersIndex didIndex=_indexsMgr.getDidIndex(did);
+    if (didIndex==null)
+    {
+      return new ArrayList<Marker>();
+    }
+    ThriftyIntSet didMarkers=didIndex.getMarkers();
+    List<Marker> ret=getMarkers(didMarkers);
+    return ret;
+  }
+
+  /**
    * Find the markers for the given content layer.
    * @param contentLayer Content layer (0 for world).
    * @return A possibly empty but never <code>null</code> list of markers.
